@@ -25,7 +25,6 @@ public:
 protected:
     void paintEvent(QPaintEvent *event);
     void keyPressEvent(QKeyEvent *event);
-    void timeout();
 
 private:
     static const int WINDOW_WIDTH = 600;
@@ -33,6 +32,8 @@ private:
     static const int CANVAS_WIDTH = 600;
     static const int CANVAS_HEIGHT = 600;
     static const int pixel = 10;
+    static const int APPLE_TIME_COUNTER = 50;
+    int timeCounter;
     int height_pixel;
     int width_pixel;
 
@@ -41,19 +42,27 @@ private:
     bool isContinue;
 
     GameSence *thisGame;
-    std::vector<GameSence*> savedGames;
+    std::vector<GameSence*> *savedGames;
     int **canvas;
     QTimer *timer;
+    int times;
 
     void init_canvas();
     void paint_canvas();
+    void load_game(int gameIndex);
 
 
 
 signals:
+    void send_pause();
 
-private slots:
+protected slots:
+    void receive_continue_game();
+    void receive_load_game();
+    void save_current_game();
+    void pause();
     void receive_enter_game(int playerNum);
+    void timeout();
 
 };
 

@@ -14,6 +14,7 @@ class snake : public QObject
     Q_OBJECT
 public:
     snake(int snakeNum, int startLen);
+    snake(snake *other);
     void changeDir(int dir);
     void setCanvas(int **canvas);
     void move();
@@ -30,7 +31,6 @@ private:
     QPoint *moveTable;
 
     int forwardDirect; //1: right 2: down 3: left 4: up
-    int length;
     bool isAlive;
     int **connectedCanvas;
 

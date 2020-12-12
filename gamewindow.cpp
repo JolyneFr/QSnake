@@ -1,5 +1,7 @@
 #include "gamewindow.h"
 #include <string.h>
+#include <QDebug>
+#include <QMessageBox>
 
 void setFontPointSize_game(QWidget *obj, int size)
 {
@@ -20,7 +22,7 @@ GameWindow::GameWindow(QWidget *parent) : QMainWindow(parent)
         QApplication::setFont(font);
     }
     else {
-        qDebug()<<"Failed to load font.";
+        qDebug() << "Failed to load font.";
     }
 
     setWindowTitle(tr("Enjoy Your Game Here!"));
@@ -28,11 +30,12 @@ GameWindow::GameWindow(QWidget *parent) : QMainWindow(parent)
 
     height_pixel = WINDOW_HEIGHT / pixel;
     width_pixel = WINDOW_WIDTH / pixel;
-    isContinue = true;
+    savedGames = new std::vector<GameSence*>;
+    isContinue = false;
+    times = 100;
+    timeCounter = 0;
 
-    thisGame = new GameSence(PlayerN);
-    init_canvas();
-    thisGame->setCanvas(canvas);
+
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 
@@ -43,6 +46,20 @@ void GameWindow::receive_enter_game(int playerNum)
 {
     this->show();
     this->PlayerN = playerNum;
+
+    thisGame = new GameSence(PlayerN);
+    init_canvas();
+    thisGame->setCanvas(canvas);
+
+    thisGame->Snake1->setCanvas(canvas);
+
+    if(thisGame->Snake2)
+    {
+        thisGame->Snake2->setCanvas(canvas);
+    }
+
+    isContinue = true;
+    timer->start(times);
 }
 
 void GameWindow::init_canvas()
@@ -54,9 +71,10 @@ void GameWindow::init_canvas()
         memset(canvas[i], 0, height_pixel *sizeof(int));
     }
 
+    std::queue<QPoint> *data = thisGame->Snake1->snakeNode;
+
     for(int i = 0; i < thisGame->startLen; i++)
     {
-        std::queue<QPoint> *data = thisGame->Snake1->snakeNode;
         QPoint p = data->front();
         data->pop();
         canvas[p.x()][p.y()] = 2;
@@ -65,10 +83,12 @@ void GameWindow::init_canvas()
 
     if (thisGame->Snake2)
     {
+
+        data = thisGame->Snake2->snakeNode;
+
         for(int i = 0; i < thisGame->startLen; i++)
         {
-            std::queue<QPoint> *data = thisGame->Snake2->snakeNode;
-            QPoint p = data->back();
+            QPoint p = data->front();
             data->pop();
             canvas[p.x()][p.y()] = 2;
             data->push(p);
@@ -79,11 +99,10 @@ void GameWindow::init_canvas()
 
 void GameWindow::paintEvent(QPaintEvent *event)
 {
+
     QColor snakeColor(tr("orange"));
     QColor wallColor(tr("grey"));
     QColor appleColor(tr("red"));
-
-
 
     for(auto pair_data : *(thisGame->changedPoint))
     {
@@ -109,15 +128,18 @@ void GameWindow::paintEvent(QPaintEvent *event)
         case 2:
         {
             painter.fillRect(p.x() * pixel, p.y() * pixel, pixel, pixel, tr("orange"));
+            //qDebug() << "painted orange head!";
             break;
         }
+        case 3:
+            painter.fillRect(p.x() * pixel, p.y() * pixel, pixel, pixel, tr("red"));
+            break;
         }
     }
 
     thisGame->changedPoint->clear();
 
-    //paint_canvas();
-
+    paint_canvas();
 
 }
 
@@ -148,6 +170,9 @@ void GameWindow::paint_canvas()
                     painter.fillRect(x * pixel, y * pixel, pixel, pixel, tr("orange"));
                     break;
                 }
+                case 3:
+                    painter.fillRect(x * pixel, y * pixel, pixel, pixel, tr("red"));
+                    break;
             }
         }
     }
@@ -176,7 +201,16 @@ void GameWindow::keyPressEvent(QKeyEvent *event)
         snake2Dir = 3;break;
     case Qt::Key_W:
         snake2Dir = 4;break;
+    case Qt::Key_Space:
+        isContinue = false;
+        break;
     }
+
+    if(!isContinue)
+    {
+        pause();
+    }
+
 
     thisGame->Snake1->changeDir(snake1Dir);
 
@@ -195,19 +229,72 @@ void GameWindow::timeout()
         timer->stop();
         return;
     }
+
     thisGame->Snake1->move();
+
     if(PlayerN == 2)
     {
         thisGame->Snake2->move();
     }
 
-    update();
+    thisGame->getChangedSnake();
+
+    timeCounter++;
+
+    if (timeCounter % APPLE_TIME_COUNTER == 1)
+    {
+        thisGame->getNewApple(this->PlayerN);
+        thisGame->Apple->clear();
+    }
 
     if (!thisGame->Snake1->qAlive() || (thisGame->Snake2 && !thisGame->Snake2->qAlive()))
     {
         timer->stop();
         isContinue = false;
-
+        qDebug() << "game end!";
     }
 
+    update();
+
+}
+
+void GameWindow::save_current_game()
+{
+    GameSence *currentGame = new GameSence(thisGame);
+    savedGames->push_back(currentGame);
+
+    QMessageBox::information(NULL, "OH YEAH!", "Game Saved Successfully");
+
+
+}
+
+void GameWindow::pause()
+{
+    this->hide();
+    emit send_pause();
+}
+
+void GameWindow::receive_continue_game()
+{
+    this->show();
+    isContinue = true;
+    timer->start(times);
+}
+
+void GameWindow::receive_load_game()
+{
+    load_game(savedGames->size() - 1);
+}
+
+void GameWindow::load_game(int gameIndex)
+{
+    thisGame = (*savedGames)[gameIndex];
+
+    canvas = thisGame->getCanvas();
+
+    update();
+
+    this->show();
+    isContinue = true;
+    timer->start(times);
 }

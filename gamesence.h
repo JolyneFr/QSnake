@@ -21,7 +21,6 @@ private:
 
     void init_wall();
     void init_snakes(int playerNum);
-    void getChangedSnake();
 
 
 public:
@@ -31,12 +30,16 @@ public:
     int startLen;
 
     std::vector<QPoint> *Wall;
-    std::vector<QPoint> *Apple;
+    std::vector<QPair<QPoint, int>> *Apple;
 
     std::vector<QPair<QPoint, int>> *changedPoint;
 
     GameSence(int playerNum);
+    GameSence(GameSence *other);
+    void getChangedSnake();
+    void getNewApple(int);
     void setCanvas(int **canvas);
+    int **getCanvas();
 
 signals:
 

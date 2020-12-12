@@ -4,7 +4,6 @@ snake::snake(int snakeNum, int startLen)
 {
 
     snakeN = snakeNum;
-    length = startLen;
     isAlive = true;
 
     snakeNode = new std::queue<QPoint>;
@@ -30,12 +29,23 @@ snake::snake(int snakeNum, int startLen)
 
         for (int i = 0; i < startLen; i++)
         {
-            snakeNode->push(QPoint(CANVAS_WIDTH_PIXEL - 2 - i, CANVAS_HEIGHT_PIXEL - 2));
+            snakeNode->push(QPoint(CANVAS_WIDTH_PIXEL - 2 - i, CANVAS_HEIGHT_PIXEL - 3));
         }
         forwardDirect = 3;
 
     }
 
+}
+
+snake::snake(snake *other)
+{
+    snakeN = other->snakeN;
+    snakeNode = new std::queue<QPoint>(*(other->snakeNode));
+    changedNode = new std::vector<QPair<QPoint, int>>(*(other->changedNode));
+
+    moveTable = other->moveTable;
+    forwardDirect = other->forwardDirect;
+    isAlive = other->isAlive;
 }
 
 void snake::setCanvas(int **canvas)
@@ -45,6 +55,9 @@ void snake::setCanvas(int **canvas)
 
 void snake::changeDir(int newDir)
 {
+
+    if (newDir == 0) return;
+
     if (newDir != forwardDirect && (newDir + 1) % 4 != forwardDirect - 1)
     {
         forwardDirect = newDir;
@@ -53,29 +66,34 @@ void snake::changeDir(int newDir)
 
 void snake::move()
 {
-    QPoint head = snakeNode->front();
+    QPoint head = snakeNode->back();
+    QPoint rear = snakeNode->front();
     QPoint newHead = head + moveTable[forwardDirect];
     int blockType = query(newHead);
+
+    int ifExtend = false;
 
     switch(blockType)
     {
     case 1:
     case 2:
         isAlive = false;
-        break;
+        return;
     case 3:
+        ifExtend = true;
         break;
     case 0:
         break;
     }
 
-    QPoint rear = snakeNode->back();
-
-    snakeNode->pop();
     snakeNode->push(newHead);
+    changedNode->push_back(QPair<QPoint, int>(newHead, 2));
 
-    changedNode->push_back(QPair<QPoint, int>(newHead, 3));
-    changedNode->push_back(QPair<QPoint, int>(rear, 0));
+    if(!ifExtend)
+    {
+        snakeNode->pop();
+        changedNode->push_back(QPair<QPoint, int>(rear, 0));
+    }
 
 
 }
@@ -89,3 +107,4 @@ bool snake::qAlive()
 {
     return this->isAlive;
 }
+

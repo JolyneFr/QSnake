@@ -13,6 +13,7 @@ SOURCES += \
     gamewindow.cpp \
     main.cpp \
     mybutton.cpp \
+    pausewindow.cpp \
     qsnakestartwindow.cpp \
     selectwindow.cpp \
     snake.cpp
@@ -21,6 +22,7 @@ HEADERS += \
     gamesence.h \
     gamewindow.h \
     mybutton.h \
+    pausewindow.h \
     qsnakestartwindow.h \
     selectwindow.h \
     snake.h
