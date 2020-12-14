@@ -4,8 +4,6 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QLabel>
-#include <QFontDatabase>
-#include <QApplication>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include "mybutton.h"
@@ -21,17 +19,19 @@ private:
     static const int WINDOW_WIDTH = 700;
     static const int WINDOW_HEIGHT = 600;
 
+    void set_layout();
+
     QVBoxLayout *outerLayout;
 
 private slots:
-    void show_select_window();
+    void receive_start();
     void on_click_back();
     void on_click_singleplayer();
     void on_click_multiplayer();
 
 signals:
-    void back_to_menu();
-    void enter_game(int playerNum);
+    void send_back();
+    void send_enter(int playerNum);
 };
 
 #endif // SELECTWINDOW_H

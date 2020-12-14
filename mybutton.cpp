@@ -3,7 +3,7 @@
 myButton::myButton(QWidget *parent) : QPushButton(parent)
 {
 
-    /*     edit my button style here     */
+    /*-----edit my button style here-----*/
 
     resize(buttonWidth, buttonHeight);
     QFont ft;
@@ -11,6 +11,7 @@ myButton::myButton(QWidget *parent) : QPushButton(parent)
     setFont(ft);
 
     /*-----change the button stylesheet here-----*/
+
     this->setStyleSheet("QPushButton{"
                         "background-color:rgba(100,240,100,100);"
                         "border-style:outset;"

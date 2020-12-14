@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>Font/Barrio-Regular.ttf</file>
+        <file>Font/AlegreyaSans-BoldItalic.ttf</file>
     </qresource>
 </RCC>

@@ -1,28 +1,18 @@
 #include "pausewindow.h"
-
-void FontPointSize_select(QWidget *obj, int size)
-{
-    QFont ft;
-    ft.setPointSize(size);
-    obj->setFont(ft);
-}
+#include "functions.h"
 
 PauseWindow::PauseWindow(QWidget *parent) : QDialog(parent)
 {
-    /*     load the font      */
 
-    int fontId = QFontDatabase::addApplicationFont(":/Font/Barrio-Regular.ttf");
-    QStringList fontIDs = QFontDatabase::applicationFontFamilies(fontId);
-    if (! fontIDs.isEmpty()) {
-        QFont font(fontIDs.first());
-        QApplication::setFont(font);
-    }
-    else {
-        qDebug()<<"Failed to load font.";
-    }
 
     setWindowTitle(tr("You Can't Escape."));
     setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    set_layout();
+}
+
+void PauseWindow::set_layout()
+{
 
     QVBoxLayout *outerLayout = new QVBoxLayout();
 
@@ -32,7 +22,7 @@ PauseWindow::PauseWindow(QWidget *parent) : QDialog(parent)
     QLabel * start = new QLabel("PAUSE!");
     start->resize(500, 100);
     start->setAlignment(Qt::AlignCenter);
-    FontPointSize_select(start, 45);
+    set_font_point_size(start, 45);
     topicLayout->addWidget(start,5);
     outerLayout->addLayout(topicLayout);
 
@@ -78,16 +68,16 @@ void PauseWindow::receive_pause()
 void PauseWindow::on_click_continue()
 {
     this->hide();
-    emit continue_game();
+    emit send_continue();
 }
 
 void PauseWindow::on_click_save()
 {
-    emit save_game();
+    emit send_save();
 }
 
 void PauseWindow::on_click_load()
 {
     this->hide();
-    emit load_game();
+    emit send_load();
 }

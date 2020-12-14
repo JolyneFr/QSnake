@@ -1,29 +1,18 @@
 #include "selectwindow.h"
-
-void setFontPointSize_select(QWidget *obj, int size)
-{
-    QFont ft;
-    ft.setPointSize(size);
-    obj->setFont(ft);
-}
+#include "functions.h"
 
 SelectWindow::SelectWindow(QWidget *parent) : QDialog(parent)
 {
-    /*     load the font      */
 
-    int fontId = QFontDatabase::addApplicationFont(":/Font/Barrio-Regular.ttf");
-    QStringList fontIDs = QFontDatabase::applicationFontFamilies(fontId);
-    if (! fontIDs.isEmpty()) {
-        QFont font(fontIDs.first());
-        QApplication::setFont(font);
-    }
-    else {
-        qDebug()<<"Failed to load font.";
-    }
 
     setWindowTitle(tr("Select Your Game Mode"));
     setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
+    set_layout();
+}
+
+void SelectWindow::set_layout()
+{
     QVBoxLayout *outerLayout = new QVBoxLayout();
 
     outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 8));
@@ -32,7 +21,7 @@ SelectWindow::SelectWindow(QWidget *parent) : QDialog(parent)
     QLabel * start = new QLabel("Select Game Mode!");
     start->resize(500, 100);
     start->setAlignment(Qt::AlignCenter);
-    setFontPointSize_select(start, 45);
+    set_font_point_size(start, 45);
     topicLayout->addWidget(start,5);
     outerLayout->addLayout(topicLayout);
 
@@ -44,21 +33,23 @@ SelectWindow::SelectWindow(QWidget *parent) : QDialog(parent)
 
     myButton * singlePlayer = new myButton();
     singlePlayer->setText(tr("SinglePlayer"));
+    singlePlayer->resize(300, 100);
     connect(singlePlayer, &QPushButton::clicked, this, &SelectWindow::on_click_singleplayer);
 
     myButton * multiPlayer = new myButton();
     multiPlayer->setText(tr("MultiPlayer"));
+    multiPlayer->resize(300, 100);
     connect(multiPlayer, &QPushButton::clicked, this, &SelectWindow::on_click_multiplayer);
 
     buttons->addWidget(singlePlayer);
-    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 20));
+    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 40));
     buttons->addWidget(multiPlayer);
     buttonLayout->addLayout(buttons);
     buttonLayout->addSpacerItem(new QSpacerItem(WINDOW_WIDTH / 5, 1));
 
     outerLayout->addLayout(buttonLayout);
 
-    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 6));
+    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 10));
 
     QHBoxLayout *backLayout = new QHBoxLayout();
     backLayout->addSpacerItem(new QSpacerItem(WINDOW_WIDTH / 5 * 4, 1));
@@ -74,22 +65,22 @@ SelectWindow::SelectWindow(QWidget *parent) : QDialog(parent)
 void SelectWindow::on_click_back()
 {
     this->hide();
-    emit back_to_menu();
+    emit send_back();
 }
 
 void SelectWindow::on_click_singleplayer()
 {
     this->hide();
-    emit enter_game(1);
+    emit send_enter(1);
 }
 
 void SelectWindow::on_click_multiplayer()
 {
     this->hide();
-    emit enter_game(2);
+    emit send_enter(2);
 }
 
-void SelectWindow::show_select_window()
+void SelectWindow::receive_start()
 {
     this->show();
 }

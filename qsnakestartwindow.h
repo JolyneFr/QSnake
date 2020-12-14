@@ -4,8 +4,6 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QLabel>
-#include <QFontDatabase>
-#include <QApplication>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include "mybutton.h"
@@ -16,26 +14,23 @@ class QsnakeStartWindow : public QWidget
 
 public:
     QsnakeStartWindow(QWidget *parent = nullptr);
-    ~QsnakeStartWindow();
-
-
-//protected:
-//    void paintEvent(QPaintEvent *);
-//    void timerEvent(QTimerEvent *);
-//    void keyPressEvent(QKeyEvent *);
 
 private:
     static const int WINDOW_WIDTH = 700;
     static const int WINDOW_HEIGHT = 600;
 
+    void set_layout();
+
     QVBoxLayout *outerLayout;
 
 
 private slots:
-    void show_start_window();
+    void receive_back();
     void on_click_start();
+    void on_click_continue();
 
 signals:
-    void start_game();
+    void send_start();
+    void send_load_continue();
 };
 #endif // QsnakeStartWindow_H

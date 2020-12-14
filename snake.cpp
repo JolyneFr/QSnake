@@ -4,10 +4,11 @@ snake::snake(int snakeNum, int startLen)
 {
 
     snakeN = snakeNum;
+    startL = startLen;
     isAlive = true;
+    lifeN = 1;
 
-    snakeNode = new std::queue<QPoint>;
-    changedNode = new std::vector<QPair<QPoint, int>>;
+    snakeNode = new QQueue<QPoint>;
 
     moveTable = new QPoint[5];
     moveTable[0] = QPoint(0, 0);
@@ -16,32 +17,40 @@ snake::snake(int snakeNum, int startLen)
     moveTable[3] = QPoint(-1, 0);
     moveTable[4] = QPoint(0, -1);
 
-    if (snakeNum == 1)
+}
+
+void snake::init_snake_on_canvas()
+{
+    if (snakeN == 1)  //snake1 in the left_up corner
     {
 
-        for (int i = 0; i < startLen; i++)
+        for (int i = 0; i < startL; i++)
         {
-            snakeNode->push(QPoint(i + 2, 2));
+            QPoint p(i + 2, 2);
+            snakeNode->push_back(p);
+            connectedCanvas[p.x()][p.y()] = 2;
         }
         forwardDirect = 1;
 
-    } else {
+    } else {            //snake2 in the right_down corner
 
-        for (int i = 0; i < startLen; i++)
+        for (int i = 0; i < startL; i++)
         {
-            snakeNode->push(QPoint(CANVAS_WIDTH_PIXEL - 2 - i, CANVAS_HEIGHT_PIXEL - 3));
+            QPoint p(CANVAS_WIDTH_PIXEL - 2 - i, CANVAS_HEIGHT_PIXEL - 3);
+            snakeNode->push_back(p);
+            connectedCanvas[p.x()][p.y()] = 2;
         }
         forwardDirect = 3;
 
     }
-
 }
 
-snake::snake(snake *other)
+snake::snake(snake *other)  //copy construct
 {
     snakeN = other->snakeN;
-    snakeNode = new std::queue<QPoint>(*(other->snakeNode));
-    changedNode = new std::vector<QPair<QPoint, int>>(*(other->changedNode));
+    startL = other->startL;
+    lifeN = other->lifeN;
+    snakeNode = new QQueue<QPoint>(*(other->snakeNode));
 
     moveTable = other->moveTable;
     forwardDirect = other->forwardDirect;
@@ -58,7 +67,7 @@ void snake::changeDir(int newDir)
 
     if (newDir == 0) return;
 
-    if (newDir != forwardDirect && (newDir + 1) % 4 != forwardDirect - 1)
+    if (newDir != forwardDirect && (newDir + 1) % 4 != forwardDirect - 1) // only allows 2 directions to change
     {
         forwardDirect = newDir;
     }
@@ -71,30 +80,44 @@ void snake::move()
     QPoint newHead = head + moveTable[forwardDirect];
     int blockType = query(newHead);
 
-    int ifExtend = false;
+    bool ifExtend = false;       //if eat the red apple, the snake extend (blocktype = 3)
 
     switch(blockType)
     {
     case 1:
     case 2:
-        isAlive = false;
-        return;
+        lifeN--;
+        if (lifeN == 0 || if_out_of_bound(newHead))
+        {
+            isAlive = false;
+            return;
+        }
+        break;
     case 3:
         ifExtend = true;
+        break;
+    case 4:
+        lifeN++;  // +1s
+        break;
+    case 5:
+    case 6:
+        //speed up & down: leave to the game window to solve
         break;
     case 0:
         break;
     }
 
-    snakeNode->push(newHead);
-    changedNode->push_back(QPair<QPoint, int>(newHead, 2));
+    snakeNode->push_back(newHead);
+    connectedCanvas[newHead.x()][newHead.y()] = 2;
+
+
+    /*-----Didn't Eat the Red Apple-----*/
 
     if(!ifExtend)
     {
-        snakeNode->pop();
-        changedNode->push_back(QPair<QPoint, int>(rear, 0));
+        snakeNode->pop_front();
+        connectedCanvas[rear.x()][rear.y()] = 0;
     }
-
 
 }
 
@@ -103,8 +126,52 @@ int snake::query(QPoint p)
     return connectedCanvas[p.x()][p.y()];
 }
 
-bool snake::qAlive()
+bool &snake::qAlive()
 {
     return this->isAlive;
 }
+
+bool snake::if_out_of_bound(QPoint p)
+{
+    return p.x() == 0 || p.y() == 0 || p.x() == CANVAS_WIDTH_PIXEL - 1 || p.y() == CANVAS_HEIGHT_PIXEL - 1;
+}
+
+int &snake::direct()
+{
+    return forwardDirect;
+}
+
+QDataStream &operator<<(QDataStream & output, const snake &obj)
+{
+    output << obj.snakeN << obj.lifeN << obj.forwardDirect << obj.isAlive <<obj.snakeNode->size();
+
+    for (int i = 0; i < (int)obj.snakeNode->size(); i++)
+    {
+        QPoint curP = obj.snakeNode->front();
+        obj.snakeNode->pop_front();
+        output << curP.x() << curP.y();
+        obj.snakeNode->push_back(curP);
+    }
+
+    return output;
+}
+
+QDataStream &operator>>(QDataStream & input, snake &obj)
+{
+    int snake_length;
+
+    input >> obj.snakeN >> obj.lifeN >> obj.direct() >> obj.qAlive() >> snake_length;
+
+    obj.snakeNode->clear();
+
+    for (int i = 0; i < snake_length; i++)
+    {
+        int x, y;
+        input >> x >> y;
+        obj.snakeNode->push_back(QPoint(x, y));
+    }
+
+    return input;
+}
+
 

@@ -1,5 +1,5 @@
-#ifndef PAUSEWINDOW_H
-#define PAUSEWINDOW_H
+#ifndef DEADWINDOW_H
+#define DEADWINDOW_H
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -9,11 +9,11 @@
 #include "mybutton.h"
 #include <QDialog>
 
-class PauseWindow : public QDialog
+class DeadWindow : public QDialog
 {
     Q_OBJECT
 public:
-    explicit PauseWindow(QWidget *parent = nullptr);
+    explicit DeadWindow(QWidget *parent = nullptr);
 
 private:
     static const int WINDOW_WIDTH = 700;
@@ -24,17 +24,16 @@ private:
     QVBoxLayout *outerLayout;
 
 signals:
-    void send_continue();
-    void send_save();
+    void send_restart();
     void send_load();
+    void send_back();
 
 private slots:
-    void receive_pause();
-    void on_click_continue();
-    void on_click_save();
+    void receive_dead();
+    void on_click_restart();
     void on_click_load();
-
+    void on_click_back();
 
 };
 
-#endif // PAUSEWINDOW_H
+#endif // DEADWINDOW_H

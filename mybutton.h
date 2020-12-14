@@ -15,7 +15,7 @@ public:
 
 private:
 
-    static const int buttonHeight = 74;
+    static const int buttonHeight = 60;
     static const int buttonWidth = 250;
     static const int fontSize = 25;
 
