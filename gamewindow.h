@@ -32,7 +32,8 @@ private:
     static const int WINDOW_HEIGHT = 800;
     static const int CANVAS_WIDTH = 600;
     static const int CANVAS_HEIGHT = 600;
-    static const int pixel = 20;
+    static const int pixel = 30;
+    static const int times = 30;
     static const int APPLE_TIME_COUNTER = 50;
 
     QVBoxLayout *outerLayout;

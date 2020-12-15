@@ -18,8 +18,8 @@ private:
     bool ifAuto;
     int **gameCanvas;
 
-    static const int CANVAS_WIDTH_PIXEL = 30;
-    static const int CANVAS_HEIGHT_PIXEL = 30;
+    static const int CANVAS_WIDTH_PIXEL = 20;
+    static const int CANVAS_HEIGHT_PIXEL = 20;
 
     void init_wall();
     void init_snakes(int playerNum, int **canvas);
@@ -32,7 +32,6 @@ public:
     snake *Snake1;
     snake *Snake2;
     int startLen;
-    int times;
 
     std::vector<QPoint> *Wall;
     std::vector<QPair<QPoint, int>> *Apple;

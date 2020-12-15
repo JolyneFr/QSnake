@@ -77,7 +77,7 @@ void GameWindow::receive_enter_game(int playerNum)
 
     isContinue = true;
 
-    timer->start(thisGame->times);
+    timer->start(times);
 
     update_labels();
 }
@@ -174,22 +174,16 @@ void GameWindow::timeout()
         thisGame->getNewApple(this->PlayerN);
     }
 
-    thisGame->Snake1->move();
+    if (timeCounter % (thisGame->Snake1->getSpeedCounter()) == 0)
+    {
+        thisGame->Snake1->move();
+    }
 
-    if(thisGame->get_playerN() == 2)
+    if(thisGame->get_playerN() == 2 && timeCounter % (thisGame->Snake2->getSpeedCounter()) == 0)
     {
         if (thisGame->get_ifAuto())
         {
-
-            QPoint target(CANVAS_HEIGHT / pixel / 2, CANVAS_WIDTH / pixel / 2);
-            int r = 1800;
-
-            if (!thisGame->Apple->empty())
-            {
-                target = (*(thisGame->Apple))[0].first;
-            }
-
-            thisGame->Snake2->auto_move(target);
+            thisGame->Snake2->auto_move();
         }
         thisGame->Snake2->move();
     }
@@ -204,22 +198,8 @@ void GameWindow::timeout()
         {
             thisGame->Apple->clear();
             thisGame->getNewApple(this->PlayerN);
-
-            if (appleT == 5)
-            {
-                thisGame->speed_up();
-                timer->setInterval(thisGame->times);
-            }
-
-            if (appleT == 6)
-            {
-                thisGame->speed_down();
-                timer->setInterval(thisGame->times);
-            }
         }
     }
-
-
 
     if (!thisGame->Snake1->qAlive() || (thisGame->get_playerN() == 2 && !thisGame->Snake2->qAlive()))
     {
@@ -259,7 +239,7 @@ void GameWindow::receive_continue_game()
 {
     this->show();
     isContinue = true;
-    timer->start(thisGame->times);
+    timer->start(times);
 }
 
 void GameWindow::receive_load_game()
@@ -275,7 +255,7 @@ void GameWindow::receive_load_game()
 
     isContinue = true;
 
-    timer->start(thisGame->times);
+    timer->start(times);
 }
 
 void GameWindow::load_game(int gameIndex)
@@ -288,7 +268,7 @@ void GameWindow::load_game(int gameIndex)
 
     this->show();
     isContinue = true;
-    timer->start(thisGame->times);
+    timer->start(times);
 }
 
 void GameWindow::restart()
@@ -306,7 +286,7 @@ void GameWindow::restart()
 
     isContinue = true;
 
-    timer->start(thisGame->times);
+    timer->start(times);
 
     update_labels();
 
@@ -321,7 +301,7 @@ void GameWindow::receive_restart()
 
 void GameWindow::update_labels()
 {
-    speedLabel->setText("SPEED: " + QString::number(thisGame->get_speed()));
+    speedLabel->setText("SPEED: ");
 
     scoreLabel1->setText("Player1: " + QString::number((int)thisGame->Snake1->snakeNode->size() - GameSence::SNAKE_START_LEN));
     lifeLabel1->setText("Life: " + QString::number(thisGame->Snake1->lifeN));
@@ -352,7 +332,7 @@ void GameWindow::receive_load_continue()
 
     this->show();
     isContinue = true;
-    timer->start(thisGame->times);
+    timer->start(times);
 }
 
 

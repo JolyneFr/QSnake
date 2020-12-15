@@ -5,6 +5,7 @@ snake::snake(int snakeNum, int startLen)
 
     snakeN = snakeNum;
     startL = startLen;
+    speedCounter = 3;
     isAlive = true;
     lifeN = 1;
 
@@ -49,6 +50,7 @@ snake::snake(snake *other)  //copy construct
 {
     snakeN = other->snakeN;
     startL = other->startL;
+    speedCounter = other->speedCounter;
     lifeN = other->lifeN;
     snakeNode = new QQueue<QPoint>(*(other->snakeNode));
 
@@ -100,8 +102,10 @@ void snake::move()
         lifeN++;  // +1s
         break;
     case 5:
+        speed_up();
+        break;
     case 6:
-        //speed up & down: leave to the game window to solve
+        speed_down();
         break;
     case 0:
         break;
@@ -121,7 +125,12 @@ void snake::move()
 
 }
 
-void snake::auto_move(QPoint target)
+int snake::getSpeedCounter()
+{
+    return speedCounter;
+}
+
+void snake::auto_move()
 {
 
     struct PointNode {
@@ -224,7 +233,7 @@ int &snake::direct()
 
 QDataStream &operator<<(QDataStream & output, const snake &obj)
 {
-    output << obj.snakeN << obj.lifeN << obj.forwardDirect << obj.isAlive <<obj.snakeNode->size();
+    output << obj.snakeN << obj.lifeN << obj.forwardDirect << obj.isAlive << obj.snakeNode->size() << obj.speedCounter;
 
     for (int i = 0; i < (int)obj.snakeNode->size(); i++)
     {
@@ -241,7 +250,7 @@ QDataStream &operator>>(QDataStream & input, snake &obj)
 {
     int snake_length;
 
-    input >> obj.snakeN >> obj.lifeN >> obj.direct() >> obj.qAlive() >> snake_length;
+    input >> obj.snakeN >> obj.lifeN >> obj.direct() >> obj.qAlive() >> snake_length >> obj.speedCounter;
 
     obj.snakeNode->clear();
 
@@ -253,6 +262,18 @@ QDataStream &operator>>(QDataStream & input, snake &obj)
     }
 
     return input;
+}
+
+void snake::speed_up()
+{
+    if (speedCounter > 1)
+        speedCounter--;
+}
+
+void snake::speed_down()
+{
+    if (speedCounter < 5)
+        speedCounter++;
 }
 
 

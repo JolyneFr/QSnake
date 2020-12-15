@@ -18,8 +18,9 @@ public:
     void changeDir(int dir);
     void setCanvas(int **canvas);
     void move();
-    void auto_move(QPoint target);
+    void auto_move();
     void init_snake_on_canvas();
+    int getSpeedCounter();
     int &direct();
     bool &qAlive();     //query if alive
     int snakeN;        //nth snake (1 or 2)
@@ -32,11 +33,12 @@ public:
 
 private:
 
-    static const int CANVAS_WIDTH_PIXEL = 30;
-    static const int CANVAS_HEIGHT_PIXEL = 30;
+    static const int CANVAS_WIDTH_PIXEL = 20;
+    static const int CANVAS_HEIGHT_PIXEL = 20;
 
     QPoint *moveTable;
     int forwardDirect; //1: right 2: down 3: left 4: up
+    int speedCounter;
 
     bool isAlive;
     int **connectedCanvas;

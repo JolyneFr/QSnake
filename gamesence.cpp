@@ -9,7 +9,6 @@ GameSence::GameSence(int playerNum, bool f)
 
     playerN = playerNum;
     ifAuto = f;
-    times = 100;
     startLen = SNAKE_START_LEN;
 }
 
@@ -17,7 +16,6 @@ GameSence::GameSence(GameSence *other)
 {
     playerN = other->playerN;
     startLen = other->startLen;
-    times = other->times;
     ifAuto = other->ifAuto;
     Wall = new std::vector<QPoint>(*(other->Wall));
     Apple = new std::vector<QPair<QPoint, int>>(*(other->Apple));
@@ -62,7 +60,7 @@ GameSence::GameSence(QString filePath)
 
     QDataStream input(&file);
 
-    input >> playerN >> startLen >> times >> ifAuto;
+    input >> playerN >> startLen >> ifAuto;
 
     std::vector<QPoint>::size_type wall_size;
     std::vector<QPair<QPoint, int>>::size_type apple_size;
@@ -211,23 +209,6 @@ int** GameSence::getCanvas()
     return gameCanvas;
 }
 
-void GameSence::speed_up()
-{
-    if (times > 50)
-        times -= 25;
-}
-
-void GameSence::speed_down()
-{
-    if (times < 150)
-        times += 25;
-}
-
-int GameSence::get_speed()
-{
-    return (175 - times) / 25;
-}
-
 void GameSence::save_sence_to_file(QString filePath)
 {
     QFile file(filePath);
@@ -241,7 +222,7 @@ void GameSence::save_sence_to_file(QString filePath)
 
     QDataStream output(&file);
 
-    output << playerN << startLen << times << ifAuto;
+    output << playerN << startLen << ifAuto;
 
     output << Wall->size() << Apple->size();
 
