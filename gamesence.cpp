@@ -2,12 +2,13 @@
 #include <ctime>
 #include <QDebug>
 
-GameSence::GameSence(int playerNum)
+GameSence::GameSence(int playerNum, bool f)
 {
 
     Apple = new std::vector<QPair<QPoint, int>>;
 
     playerN = playerNum;
+    ifAuto = f;
     times = 100;
     startLen = SNAKE_START_LEN;
 }
@@ -17,6 +18,7 @@ GameSence::GameSence(GameSence *other)
     playerN = other->playerN;
     startLen = other->startLen;
     times = other->times;
+    ifAuto = other->ifAuto;
     Wall = new std::vector<QPoint>(*(other->Wall));
     Apple = new std::vector<QPair<QPoint, int>>(*(other->Apple));
 
@@ -60,7 +62,7 @@ GameSence::GameSence(QString filePath)
 
     QDataStream input(&file);
 
-    input >> playerN >> startLen >> times;
+    input >> playerN >> startLen >> times >> ifAuto;
 
     std::vector<QPoint>::size_type wall_size;
     std::vector<QPair<QPoint, int>>::size_type apple_size;
@@ -161,7 +163,10 @@ void GameSence::init_snakes(int playerNum, int **canvas)
 
 }
 
-
+bool GameSence::get_ifAuto()
+{
+    return ifAuto;
+}
 
 void GameSence::getNewApple(int Num)
 {
@@ -236,7 +241,7 @@ void GameSence::save_sence_to_file(QString filePath)
 
     QDataStream output(&file);
 
-    output << playerN << startLen << times;
+    output << playerN << startLen << times << ifAuto;
 
     output << Wall->size() << Apple->size();
 

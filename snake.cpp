@@ -36,7 +36,7 @@ void snake::init_snake_on_canvas()
 
         for (int i = 0; i < startL; i++)
         {
-            QPoint p(CANVAS_WIDTH_PIXEL - 2 - i, CANVAS_HEIGHT_PIXEL - 3);
+            QPoint p(CANVAS_WIDTH_PIXEL - 3 - i, CANVAS_HEIGHT_PIXEL - 3);
             snakeNode->push_back(p);
             connectedCanvas[p.x()][p.y()] = 2;
         }
@@ -117,6 +117,87 @@ void snake::move()
     {
         snakeNode->pop_front();
         connectedCanvas[rear.x()][rear.y()] = 0;
+    }
+
+}
+
+void snake::auto_move(QPoint target)
+{
+
+    struct PointNode {
+        QPoint p;
+        PointNode *father;
+        PointNode(QPoint _p, PointNode* _f): p(_p), father(_f) {}
+    };
+
+    QQueue<PointNode *> bfsQueue;
+
+    bool **visCanvas = new bool*[CANVAS_WIDTH_PIXEL];
+    for (int i = 0; i < CANVAS_WIDTH_PIXEL; i++)
+    {
+        visCanvas[i] = new bool[CANVAS_HEIGHT_PIXEL];
+        memset(visCanvas[i], 0, CANVAS_HEIGHT_PIXEL *sizeof(bool));
+    }
+
+    QPoint head = snakeNode->back();
+
+    bfsQueue.push_back(new PointNode(head, nullptr));
+    visCanvas[head.x()][head.y()] = true;
+
+    PointNode *curNode;
+
+    while (!bfsQueue.empty())
+    {
+        bool isFound = false;
+        int size = bfsQueue.size();
+
+        for (int i = 0; i < size; i++)
+        {
+            curNode = bfsQueue.front();
+            if (query(curNode->p) >= 3)
+            {
+                isFound = true;
+                break;
+            }
+
+            for (int j = 1; j <= 4; j++)
+            {
+                QPoint nextP = curNode->p + moveTable[j];
+
+                if (query(nextP) != 1 && query(nextP) != 2 && !visCanvas[nextP.x()][nextP.y()])
+                {
+                    bfsQueue.push_back(new PointNode(nextP, curNode));
+                    visCanvas[nextP.x()][nextP.y()] = true;
+                }
+            }
+            bfsQueue.pop_front();
+        }
+        if (isFound) break;
+    }
+
+    for (int i = 0; i < CANVAS_WIDTH_PIXEL; i++)
+    {
+        delete [] visCanvas[i];
+    }
+    delete [] visCanvas;
+
+    if (query(curNode->p) >= 3)
+    {
+        PointNode *back = curNode;
+        while (back->father->p != head)
+        {
+            back = back->father;
+        }
+        QPoint dir = back->p - head;
+
+        for (int i = 1; i <= 4; i++)
+        {
+            if (moveTable[i] == dir)
+            {
+                forwardDirect = i;
+                return;
+            }
+        }
     }
 
 }

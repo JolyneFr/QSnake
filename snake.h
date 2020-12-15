@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QPoint>
 #include <QQueue>
+#include <QSet>
 #include <vector>
 #include <QDataStream>
 

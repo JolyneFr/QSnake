@@ -28,6 +28,7 @@ private slots:
     void on_click_back();
     void on_click_singleplayer();
     void on_click_multiplayer();
+    void on_click_aifight();
 
 signals:
     void send_back();

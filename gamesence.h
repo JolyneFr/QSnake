@@ -15,6 +15,7 @@ class GameSence: public QObject
 private:
 
     int playerN;
+    bool ifAuto;
     int **gameCanvas;
 
     static const int CANVAS_WIDTH_PIXEL = 30;
@@ -36,7 +37,7 @@ public:
     std::vector<QPoint> *Wall;
     std::vector<QPair<QPoint, int>> *Apple;
 
-    GameSence(int playerNum);
+    GameSence(int playerNum, bool f);
     GameSence(GameSence *other);
     GameSence(QString filePath);
     void getNewApple(int);
@@ -46,6 +47,7 @@ public:
     void speed_down();
     int get_speed();
     int get_playerN();
+    bool get_ifAuto();
     int **getCanvas();
 
 signals:

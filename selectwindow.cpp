@@ -15,7 +15,7 @@ void SelectWindow::set_layout()
 {
     QVBoxLayout *outerLayout = new QVBoxLayout();
 
-    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 8));
+    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 15));
 
     QHBoxLayout *topicLayout = new QHBoxLayout();
     QLabel * start = new QLabel("Select Game Mode!");
@@ -25,7 +25,7 @@ void SelectWindow::set_layout()
     topicLayout->addWidget(start,5);
     outerLayout->addLayout(topicLayout);
 
-    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 10));
+    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 20));
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     buttonLayout->addSpacerItem(new QSpacerItem(WINDOW_WIDTH / 5, 1));
@@ -41,15 +41,22 @@ void SelectWindow::set_layout()
     multiPlayer->resize(300, 100);
     connect(multiPlayer, &QPushButton::clicked, this, &SelectWindow::on_click_multiplayer);
 
+    myButton * aiFight = new myButton();
+    aiFight->setText(tr("Fight with Delamain!"));
+    aiFight->resize(300, 100);
+    connect(aiFight, &QPushButton::clicked, this, &SelectWindow::on_click_aifight);
+
     buttons->addWidget(singlePlayer);
-    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 40));
+    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
     buttons->addWidget(multiPlayer);
+    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
+    buttons->addWidget(aiFight);
     buttonLayout->addLayout(buttons);
     buttonLayout->addSpacerItem(new QSpacerItem(WINDOW_WIDTH / 5, 1));
 
     outerLayout->addLayout(buttonLayout);
 
-    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 10));
+    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 15));
 
     QHBoxLayout *backLayout = new QHBoxLayout();
     backLayout->addSpacerItem(new QSpacerItem(WINDOW_WIDTH / 5 * 4, 1));
@@ -78,6 +85,12 @@ void SelectWindow::on_click_multiplayer()
 {
     this->hide();
     emit send_enter(2);
+}
+
+void SelectWindow::on_click_aifight()
+{
+    this->hide();
+    emit send_enter(3);
 }
 
 void SelectWindow::receive_start()

@@ -60,9 +60,18 @@ void GameWindow::receive_enter_game(int playerNum)
 {
     this->show();
 
-    this->PlayerN = playerNum;
     timeCounter = 0;
-    thisGame = new GameSence(PlayerN);
+    switch (playerNum) {
+    case 1:
+    case 2:
+        thisGame = new GameSence(playerNum, false);
+        this->PlayerN = playerNum;
+        break;
+    case 3:
+        thisGame = new GameSence(2, true);
+        this->PlayerN = 2;
+        break;
+    }
     init_canvas();
     thisGame->setCanvas(canvas);
 
@@ -142,7 +151,7 @@ void GameWindow::keyPressEvent(QKeyEvent *event)
 
     thisGame->Snake1->changeDir(snake1Dir);
 
-    if(PlayerN == 2)
+    if(thisGame->get_playerN() == 2 && !thisGame->get_ifAuto())
     {
         thisGame->Snake2->changeDir(snake2Dir);
     }
@@ -158,18 +167,31 @@ void GameWindow::timeout()
         return;
     }
 
-    thisGame->Snake1->move();
-
-    if(PlayerN == 2)
-    {
-        thisGame->Snake2->move();
-    }
-
     timeCounter++;
 
     if (timeCounter == 1)
     {
         thisGame->getNewApple(this->PlayerN);
+    }
+
+    thisGame->Snake1->move();
+
+    if(thisGame->get_playerN() == 2)
+    {
+        if (thisGame->get_ifAuto())
+        {
+
+            QPoint target(CANVAS_HEIGHT / pixel / 2, CANVAS_WIDTH / pixel / 2);
+            int r = 1800;
+
+            if (!thisGame->Apple->empty())
+            {
+                target = (*(thisGame->Apple))[0].first;
+            }
+
+            thisGame->Snake2->auto_move(target);
+        }
+        thisGame->Snake2->move();
     }
 
 
@@ -199,7 +221,7 @@ void GameWindow::timeout()
 
 
 
-    if (!thisGame->Snake1->qAlive() || (PlayerN == 2 && !thisGame->Snake2->qAlive()))
+    if (!thisGame->Snake1->qAlive() || (thisGame->get_playerN() == 2 && !thisGame->Snake2->qAlive()))
     {
         timer->stop();
         isContinue = false;
@@ -276,7 +298,9 @@ void GameWindow::restart()
 
     timeCounter = 0;
 
-    thisGame = new GameSence(PlayerN);
+    bool ifAuto = thisGame->get_ifAuto();
+
+    thisGame = new GameSence(PlayerN, ifAuto);
     init_canvas();
     thisGame->setCanvas(canvas);
 
@@ -302,7 +326,7 @@ void GameWindow::update_labels()
     scoreLabel1->setText("Player1: " + QString::number((int)thisGame->Snake1->snakeNode->size() - GameSence::SNAKE_START_LEN));
     lifeLabel1->setText("Life: " + QString::number(thisGame->Snake1->lifeN));
 
-    if (PlayerN == 2)
+    if (thisGame->get_playerN() == 2)
     {
         scoreLabel2->setText("Player2: " + QString::number((int)thisGame->Snake2->snakeNode->size() - GameSence::SNAKE_START_LEN));
         lifeLabel2->setText("Life: " + QString::number(thisGame->Snake1->lifeN));
