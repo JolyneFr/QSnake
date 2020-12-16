@@ -22,8 +22,8 @@ SJTU SE2019 SEP Project1
     - Using BFS Algorithm, treated all fruits equally.
     
 ## Game Guide
-I sincerely hope **EVERYONE** read this guide before playing my QSnake.  
-Especially my dear TA, who jugdes my final score.  
+I sincerely hope **EVERYONE** reads this guide before playing my QSnake.  
+Especially my dear TA, who grades my final work.  
 1. Bricks represented by different colors are shown in the gameWindow.  
     - <font color = #FFA500> Snake1 </font>,
   <font color = #000080> Snake2 </font>,
