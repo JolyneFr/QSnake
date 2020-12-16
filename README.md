@@ -11,11 +11,15 @@ SJTU SE2019 SEP Project1
 ### 2.Advanced Features
 - MultiPlayer in one game (Arrow Keys for Snake1 & WASD for Snake2)
 - 3 Special Fruit
-    - LifeFruit
-    - Speed Up & Down
-    - Exchange Snakes (Only Available in MultiPlayer Games)
+    - LifeFruit.
+    - Speed Up & Down.
+    - Exchange Snakes (Only Available in MultiPlayer Games).
+- Map Editon
+    - You are able to edit bricks (except snakes and boundarys).
+    - Edition is available in Pause and Start windows.
+    - Remember to ask for permission if you are playing with friends.
 - Simple AI-Snake: **"Delamain"**
-    - Using BFS Algorithm, treated all fruits equally
+    - Using BFS Algorithm, treated all fruits equally.
     
 ## Game Guide
 I sincerely hope **EVERYONE** read this guide before playing my QSnake.  
@@ -34,7 +38,7 @@ Especially my dear TA, who jugdes my final score.
 4. This game **WON'T** implicitly save the gameSence, please do it manually.
 5. Delamain's algorithm may be simple, but beating it is kind of difficult.
 6. The implement of QTimer::timeout() and QKeyEvent::keyPressEvent() aren't connected, which means your death may occur **before** you see it on canvas.
-7. I'm working **desperately** on canvas-edit and completion of comments. So just be paitient.
+7. I'm working **desperately** on completion of comments. So just be paitient.
 
-## Thanks for Playing my First Qt Game
+## Thanks for Playing My First Qt Game
 JoyneFr 2020/12/16
