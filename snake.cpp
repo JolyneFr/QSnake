@@ -10,6 +10,7 @@ snake::snake(int snakeNum, int startLen)
     lifeN = 1;
 
     snakeNode = new QQueue<QPoint>;
+    overlapNode = new QQueue<QPoint>;
 
     moveTable = new QPoint[5];
     moveTable[0] = QPoint(0, 0);
@@ -52,6 +53,7 @@ snake::snake(snake *other)  //copy construct
     speedCounter = other->speedCounter;
     lifeN = other->lifeN;
     snakeNode = new QQueue<QPoint>(*(other->snakeNode));
+    overlapNode = new QQueue<QPoint>(*(other->overlapNode));
 
     moveTable = other->moveTable;
     forwardDirect = other->forwardDirect;
@@ -90,6 +92,7 @@ void snake::move()
     case BlockType::Snake1:
     case BlockType::Snake2:
         lifeN--;
+        overlapNode->push_back(newHead);
         if (lifeN == 0 || if_out_of_bound(newHead))
         {
             isAlive = false;
@@ -121,7 +124,15 @@ void snake::move()
     if(!ifExtend)
     {
         snakeNode->pop_front();
-        connectedCanvas[rear.x()][rear.y()] = BlockType::BackGround;
+
+        if (!overlapNode->empty() && rear == overlapNode->front())
+        {
+            overlapNode->pop_front();
+        }
+        else
+        {
+            connectedCanvas[rear.x()][rear.y()] = BlockType::BackGround;
+        }
     }
 
 }
@@ -252,7 +263,8 @@ int &snake::direct()
 
 QDataStream &operator<<(QDataStream & output, const snake &obj)
 {
-    output << obj.snakeN << obj.lifeN << obj.forwardDirect << obj.isAlive << obj.snakeNode->size() << obj.speedCounter;
+    output << obj.snakeN << obj.lifeN << obj.forwardDirect << obj.isAlive
+           << obj.snakeNode->size() << obj.speedCounter << obj.overlapNode->size();
 
     for (int i = 0; i < (int)obj.snakeNode->size(); i++)
     {
@@ -262,22 +274,38 @@ QDataStream &operator<<(QDataStream & output, const snake &obj)
         obj.snakeNode->push_back(curP);
     }
 
+    for (int i = 0; i < (int)obj.overlapNode->size(); i++)
+    {
+        QPoint curP = obj.overlapNode->front();
+        obj.overlapNode->pop_front();
+        output << curP.x() << curP.y();
+        obj.overlapNode->push_back(curP);
+    }
+
     return output;
 }
 
 QDataStream &operator>>(QDataStream & input, snake &obj)
 {
-    int snake_length;
+    int snake_length, overlap_length;
 
-    input >> obj.snakeN >> obj.lifeN >> obj.direct() >> obj.qAlive() >> snake_length >> obj.speedCounter;
+    input >> obj.snakeN >> obj.lifeN >> obj.direct() >> obj.qAlive() >> snake_length >> obj.speedCounter >> overlap_length;
 
     obj.snakeNode->clear();
+    obj.overlapNode->clear();
 
     for (int i = 0; i < snake_length; i++)
     {
         int x, y;
         input >> x >> y;
         obj.snakeNode->push_back(QPoint(x, y));
+    }
+
+    for (int i = 0; i < overlap_length; i++)
+    {
+        int x, y;
+        input >> x >> y;
+        obj.overlapNode->push_back(QPoint(x, y));
     }
 
     return input;

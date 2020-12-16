@@ -29,6 +29,7 @@ public:
     int startL;
     int lifeN;         //number of life
     QQueue<QPoint> *snakeNode;
+    QQueue<QPoint> *overlapNode;
 
     friend QDataStream &operator<<(QDataStream &, const snake &);
     friend QDataStream &operator>>(QDataStream &, snake &);
