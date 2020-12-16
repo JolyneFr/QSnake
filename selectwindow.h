@@ -18,8 +18,11 @@ public:
 private:
     static const int WINDOW_WIDTH = 700;
     static const int WINDOW_HEIGHT = 700;
+    static const int width_pixel = 20;
+    static const int height_pixel = 20;
 
     void set_layout();
+    int **get_canvas_clone();
 
     QVBoxLayout *outerLayout;
     int **carriedCanvas;

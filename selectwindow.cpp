@@ -76,6 +76,21 @@ void SelectWindow::set_layout()
     this->setLayout(outerLayout);
 }
 
+int** SelectWindow::get_canvas_clone()
+{
+    int **canvas = new int*[width_pixel];
+
+    for(int i = 0; i < width_pixel; i++)
+    {
+        canvas[i] = new int[height_pixel];
+        for (int j = 0; j < height_pixel; j++)
+        {
+            canvas[i][j] = carriedCanvas[i][j];
+        }
+    }
+    return canvas;
+}
+
 void SelectWindow::on_click_back()
 {
     this->hide();
@@ -85,25 +100,25 @@ void SelectWindow::on_click_back()
 void SelectWindow::on_click_singleplayer()
 {
     this->hide();
-    emit send_enter(1, carriedCanvas);
+    emit send_enter(1, get_canvas_clone());
 }
 
 void SelectWindow::on_click_multiplayer()
 {
     this->hide();
-    emit send_enter(2, carriedCanvas);
+    emit send_enter(2, get_canvas_clone());
 }
 
 void SelectWindow::on_click_aishow()
 {
     this->hide();
-    emit send_enter(3, carriedCanvas);
+    emit send_enter(3, get_canvas_clone());
 }
 
 void SelectWindow::on_click_aifight()
 {
     this->hide();
-    emit send_enter(4, carriedCanvas);
+    emit send_enter(4, get_canvas_clone());
 }
 
 void SelectWindow::receive_start(int **canvas)

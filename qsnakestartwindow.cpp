@@ -73,7 +73,6 @@ void QsnakeStartWindow::on_click_start()
 {
     this->hide();
     emit send_start(nullptr);
-
 }
 
 void QsnakeStartWindow::on_click_continue()
