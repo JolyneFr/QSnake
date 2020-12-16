@@ -30,10 +30,11 @@ Especially my dear TA, who jugdes my final score.
   <font color = #FFC)CB> Exchange </font>.  
     - Exchange Fruits are only available in MultiPlayer games(vs Player2 or Delamain)
 2. You **CAN'T** move through the boundary (You will die if you do so).
-3. This game **WON'T** implicitly save the gameSence, please do it manually.
-4. Delamain's algorithm may be simple, but beating it is kind of difficult.
-5. The implement of QTimer::timeout() and QKeyEvent::keyPressEvent() aren't connected, which means your death may occur **before** you see it on canvas.
-6. I'm working **desperately** on canvas-edit and completion of comments. So just be paitient.
+3. When your head crashes into another snake's body (or yourself's), you can pay one life to move through one brick.  
+4. This game **WON'T** implicitly save the gameSence, please do it manually.
+5. Delamain's algorithm may be simple, but beating it is kind of difficult.
+6. The implement of QTimer::timeout() and QKeyEvent::keyPressEvent() aren't connected, which means your death may occur **before** you see it on canvas.
+7. I'm working **desperately** on canvas-edit and completion of comments. So just be paitient.
 
 ## Thanks for Playing my First Qt Game
 JoyneFr 2020/12/16
