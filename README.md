@@ -19,7 +19,9 @@ SJTU SE2019 SEP Project1
     - Edition is available in Pause and Start windows.
     - Remember to ask for permission if you are playing with friends.
 - Simple AI-Snake: **"Delamain"**
-    - Using BFS Algorithm, treated all fruits equally.
+    - Using BFS Algorithm, treated all fruits equally.  
+    
+**All required tasks are included.**
     
 ## Game Guide
 I sincerely hope **EVERYONE** reads this guide before playing my QSnake.  
