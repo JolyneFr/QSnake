@@ -42,9 +42,10 @@ signals:
     void send_back_to_menu();
     void send_back_to_pause();
     void send_start(int **);
+    void send_continue(int **);
 
 private slots:
-    void receive_edit(int);
+    void receive_edit(int, int**);
     void on_click_back();
     void on_click_run();
 

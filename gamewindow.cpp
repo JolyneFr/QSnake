@@ -93,11 +93,13 @@ void GameWindow::receive_enter_game(int playerNum, int **carriedCanvas)
 
     if (carriedCanvas)
     {
-        canvas = carriedCanvas;
-        thisGame->setCanvas(carriedCanvas);
+        defaultCanvas = carriedCanvas;
+        canvas = get_canvas_clone(carriedCanvas);
+        thisGame->setCanvas(canvas);
     }
     else
     {
+        defaultCanvas = nullptr;
         init_canvas();
         thisGame->setCanvas(canvas);
     }
@@ -301,10 +303,10 @@ void GameWindow::receive_save()
 void GameWindow::on_press_pause()
 {
     this->hide();
-    emit send_pause();
+    emit send_pause(canvas);
 }
 
-void GameWindow::receive_continue_game()
+void GameWindow::receive_continue_game(int **newCanvas)
 {
     this->show();
     isContinue = true;
@@ -349,6 +351,26 @@ void GameWindow::load_game(int gameIndex)
     timer->start(times);
 }
 
+int** GameWindow::get_canvas_clone(int **defaultCanvas)
+{
+    if (!defaultCanvas)
+    {
+        return nullptr;
+    }
+
+    int **cloneCanvas = new int*[width_pixel];
+
+    for(int i = 0; i < width_pixel; i++)
+    {
+        cloneCanvas[i] = new int[height_pixel];
+        for (int j = 0; j < height_pixel; j++)
+        {
+            cloneCanvas[i][j] = defaultCanvas[i][j];
+        }
+    }
+    return cloneCanvas;
+}
+
 void GameWindow::restart()
 {
 
@@ -359,8 +381,18 @@ void GameWindow::restart()
     bool ifAuto = thisGame->get_ifAuto();
 
     thisGame = new GameSence(PlayerN, ifAuto);
-    init_canvas();
-    thisGame->setCanvas(canvas);
+
+    if (defaultCanvas)
+    {
+        int **cloneCanvas = get_canvas_clone(defaultCanvas);
+        canvas = cloneCanvas;
+        thisGame->setCanvas(cloneCanvas);
+    }
+    else
+    {
+        init_canvas();
+        thisGame->setCanvas(canvas);
+    }
 
     isContinue = true;
 

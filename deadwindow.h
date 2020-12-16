@@ -18,7 +18,7 @@ private:
     /*     preset data to init the window     */
     /*     free to change                     */
     static const int WINDOW_WIDTH = 700;
-    static const int WINDOW_HEIGHT = 600;
+    static const int WINDOW_HEIGHT = 700;
 
     /*     window layout     */
     void set_layout();

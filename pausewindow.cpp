@@ -45,6 +45,11 @@ void PauseWindow::set_layout()
     loadButton->setText(tr("Load Game"));
     connect(loadButton, &QPushButton::clicked, this, &PauseWindow::on_click_load);
 
+    myButton * editButton = new myButton();
+    editButton->setText(tr("Edit Canvas"));
+    connect(editButton, &QPushButton::clicked, this, &PauseWindow::on_click_edit);
+
+
     myButton * backButton = new myButton();
     backButton->setText(tr("Back to MainWindow"));
     connect(backButton, &QPushButton::clicked, this, &PauseWindow::on_click_back);
@@ -54,6 +59,8 @@ void PauseWindow::set_layout()
     buttons->addWidget(saveButton);
     buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
     buttons->addWidget(loadButton);
+    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
+    buttons->addWidget(editButton);
     buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
     buttons->addWidget(backButton);
     buttonLayout->addLayout(buttons);
@@ -66,15 +73,16 @@ void PauseWindow::set_layout()
     this->setLayout(outerLayout);
 }
 
-void PauseWindow::receive_pause()
+void PauseWindow::receive_pause(int **receiveCanvas)
 {
+    canvas = receiveCanvas;
     this->show();
 }
 
 void PauseWindow::on_click_continue()
 {
     this->hide();
-    emit send_continue();
+    emit send_continue(nullptr);
 }
 
 void PauseWindow::on_click_save()
@@ -92,4 +100,9 @@ void PauseWindow::on_click_load()
 {
     this->hide();
     emit send_load();
+}
+void PauseWindow::on_click_edit()
+{
+    this->hide();
+    emit send_edit(2, canvas);
 }

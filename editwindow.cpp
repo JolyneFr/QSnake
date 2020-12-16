@@ -155,16 +155,32 @@ int EditWindow::painterColorType()
     return colorButtons->checkedId();
 }
 
-void EditWindow::receive_edit(int _caller)
+void EditWindow::receive_edit(int _caller, int **curCanvas)
 {
     caller = _caller;
+    if (caller == 1)
+    {
+        init_canvas();
+    }
+    else
+    {
+        canvas = curCanvas;
+    }
+
     this->show();
 }
 
 void EditWindow::on_click_run()
 {
     this->hide();
-    emit send_start(canvas);
+    if (caller == 1)
+    {
+        emit send_start(canvas);
+    }
+    else
+    {
+        emit send_continue(canvas);
+    }
 }
 
 void EditWindow::on_click_back()

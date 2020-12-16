@@ -23,18 +23,22 @@ private:
 
     QVBoxLayout *outerLayout;
 
+    int **canvas;
+
 signals:
-    void send_continue();
+    void send_continue(int **);
     void send_save();
     void send_load();
     void send_back();
+    void send_edit(int, int**);
 
 private slots:
-    void receive_pause();
+    void receive_pause(int **);
     void on_click_continue();
     void on_click_save();
     void on_click_load();
     void on_click_back();
+    void on_click_edit();
 
 
 };

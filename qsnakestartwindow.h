@@ -33,6 +33,6 @@ private slots:
 signals:
     void send_start(int **);
     void send_load_continue();
-    void send_edit(int);
+    void send_edit(int, int**);
 };
 #endif // QsnakeStartWindow_H

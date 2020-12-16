@@ -58,6 +58,7 @@ private:
     std::vector<GameSence*> *savedGames;
 
     int **canvas;
+    int **defaultCanvas;
     QTimer *timer;
 
     void init_canvas();
@@ -67,6 +68,7 @@ private:
     void update_apples();
     void check_death();
     void exchange_snakes();
+    int **get_canvas_clone(int **);
     void move_snake(int);
     void load_game(int gameIndex);
     void restart();
@@ -74,12 +76,12 @@ private:
 
 
 signals:
-    void send_pause();
+    void send_pause(int **);
     void send_back_to_menu();
     void send_dead(int i, int n, bool f);
 
 protected slots:
-    void receive_continue_game();
+    void receive_continue_game(int **);
     void receive_load_game();
     void receive_restart();
     void receive_save();

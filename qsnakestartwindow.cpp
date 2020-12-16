@@ -84,7 +84,7 @@ void QsnakeStartWindow::on_click_continue()
 void QsnakeStartWindow::on_click_edit()
 {
     this->hide();
-    emit send_edit(1);
+    emit send_edit(1, nullptr);
 }
 
 void QsnakeStartWindow::receive_back()

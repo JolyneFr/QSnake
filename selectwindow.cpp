@@ -78,6 +78,11 @@ void SelectWindow::set_layout()
 
 int** SelectWindow::get_canvas_clone()
 {
+    if (!carriedCanvas)
+    {
+        return nullptr;
+    }
+
     int **canvas = new int*[width_pixel];
 
     for(int i = 0; i < width_pixel; i++)
