@@ -184,7 +184,7 @@ void GameSence::getNewApple(int Num)
         {
             type = BlockType::LifeFruit;
         }
-        else if(typerand < 17)
+        else if(typerand < 18)
         {
             type = BlockType::SpeedUp;
         }

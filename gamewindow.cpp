@@ -253,7 +253,7 @@ void GameWindow::update_apples()
         {
             thisGame->Apple->erase(apple);
             thisGame->getNewApple(1);
-            if (appleT == BlockType::Exchange)
+            if (appleT == BlockType::Exchange && thisGame->get_playerN() == 2)
             {
                 exchange_snakes();
             }
