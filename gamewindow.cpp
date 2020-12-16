@@ -306,10 +306,11 @@ void GameWindow::on_press_pause()
     emit send_pause(canvas);
 }
 
-void GameWindow::receive_continue_game(int **newCanvas)
+void GameWindow::receive_continue_game()
 {
     this->show();
     isContinue = true;
+    thisGame->update_apple();
     timer->start(times);
 }
 

@@ -32,8 +32,6 @@ private:
     /*     pre-draw snakes on the canvas     */
     void init_snakes(int playerNum, int **canvas);
 
-    void update_apple();
-
 
 public:
 
@@ -57,6 +55,7 @@ public:
 
     void getNewApple(int);
     void setCanvas(int **canvas);
+    void update_apple();
     void save_sence_to_file(QString filePath);
     void speed_up();
     void speed_down();

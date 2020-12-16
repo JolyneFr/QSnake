@@ -81,7 +81,7 @@ signals:
     void send_dead(int i, int n, bool f);
 
 protected slots:
-    void receive_continue_game(int **);
+    void receive_continue_game();
     void receive_load_game();
     void receive_restart();
     void receive_save();

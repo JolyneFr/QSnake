@@ -179,7 +179,7 @@ void EditWindow::on_click_run()
     }
     else
     {
-        emit send_continue(canvas);
+        emit send_continue();
     }
 }
 

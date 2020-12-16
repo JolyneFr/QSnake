@@ -82,7 +82,7 @@ void PauseWindow::receive_pause(int **receiveCanvas)
 void PauseWindow::on_click_continue()
 {
     this->hide();
-    emit send_continue(nullptr);
+    emit send_continue();
 }
 
 void PauseWindow::on_click_save()

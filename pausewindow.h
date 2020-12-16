@@ -26,7 +26,7 @@ private:
     int **canvas;
 
 signals:
-    void send_continue(int **);
+    void send_continue();
     void send_save();
     void send_load();
     void send_back();

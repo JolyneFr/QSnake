@@ -42,7 +42,7 @@ signals:
     void send_back_to_menu();
     void send_back_to_pause();
     void send_start(int **);
-    void send_continue(int **);
+    void send_continue();
 
 private slots:
     void receive_edit(int, int**);
