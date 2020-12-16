@@ -34,7 +34,7 @@ Especially my dear TA, who jugdes my final score.
     - this will cause a skip of brick in your body. **Don't worry, it's a part of game feature.**
 4. This game **WON'T** implicitly save the gameSence, please do it manually.
 5. Delamain's algorithm may be simple, but beating it is kind of difficult.
-6. The implement of QTimer::timeout() and QKeyEvent::keyPressEvent() aren't connected, which means your death may occured **before** you see it on canvas.
+6. The implement of QTimer::timeout() and QKeyEvent::keyPressEvent() aren't connected, which means your death may occur **before** you see it on canvas.
 7. I'm working **desperately** on canvas-edit and completion of comments. So just be paitient.
 
 ## Thanks for Playing my First Qt Game
