@@ -75,6 +75,7 @@ private:
 
 signals:
     void send_pause();
+    void send_back_to_menu();
     void send_dead(int i, int n, bool f);
 
 protected slots:

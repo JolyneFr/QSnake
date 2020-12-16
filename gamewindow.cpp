@@ -319,7 +319,7 @@ void GameWindow::receive_load_game()
     if (!file.exists() || file.size() < 10)
     {
         QMessageBox::information(NULL, "OH NO!", "No Game Saved.\n Please save a game before load.");
-        emit send_pause();
+        emit send_back_to_menu();
         return;
     }
 
@@ -405,7 +405,7 @@ void GameWindow::receive_load_continue()
     if (!file.exists())
     {
         QMessageBox::information(NULL, "OH NO!", "No Game Saved.\n Please save a game before load.");
-        emit send_pause();
+        emit send_back_to_menu();
         return;
     }
 

@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 
     /*-----Connect All Signals & Slots Between Windows-----*/
 
-    QObject::connect(&w, SIGNAL(send_start()), &s, SLOT(receive_start(int **)));
+    QObject::connect(&w, SIGNAL(send_start(int **)), &s, SLOT(receive_start(int **)));
     QObject::connect(&s, SIGNAL(send_back()), &w, SLOT(receive_back()));
     QObject::connect(&s, SIGNAL(send_enter(int, int**)), &g, SLOT(receive_enter_game(int, int**)));
     QObject::connect(&g, SIGNAL(send_pause()), &p, SLOT(receive_pause()));
@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
     QObject::connect(&w, SIGNAL(send_edit(int)), &e, SLOT(receive_edit(int)));
     QObject::connect(&e, SIGNAL(send_back_to_menu()), &w, SLOT(receive_back()));
     QObject::connect(&e, SIGNAL(send_start(int **)), &s, SLOT(receive_start(int **)));
+    QObject::connect(&g, SIGNAL(send_back_to_menu()), &w, SLOT(receive_back()));
 
     return a.exec();
 }
