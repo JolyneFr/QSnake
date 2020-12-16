@@ -28,9 +28,11 @@ private slots:
     void receive_back();
     void on_click_start();
     void on_click_continue();
+    void on_click_edit();
 
 signals:
-    void send_start();
+    void send_start(int **);
     void send_load_continue();
+    void send_edit(int);
 };
 #endif // QsnakeStartWindow_H

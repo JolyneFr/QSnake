@@ -32,6 +32,8 @@ private:
     /*     pre-draw snakes on the canvas     */
     void init_snakes(int playerNum, int **canvas);
 
+    void update_apple();
+
 
 public:
 

@@ -33,6 +33,13 @@ myButton::myButton(QWidget *parent) : QPushButton(parent)
                         "background-color:rgba(100,255,100,100);"
                         "border-color:rgba(255,255,255,200);"
                         "color:rgba(0,0,0,200);"
+                        "}"
+
+                        "QPushButton:checked{"
+                        "background-color:rgba(144,238,144,200);"
+                        "border-color:rgba(0,0,0,200);"
+                        "border-style:inset;"
+                        "color:rgba(0,0,0,200);"
                         "}");
 }
 

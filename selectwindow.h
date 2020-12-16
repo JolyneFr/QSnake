@@ -22,9 +22,10 @@ private:
     void set_layout();
 
     QVBoxLayout *outerLayout;
+    int **carriedCanvas;
 
 private slots:
-    void receive_start();
+    void receive_start(int **canvas);
     void on_click_back();
     void on_click_singleplayer();
     void on_click_multiplayer();
@@ -33,7 +34,7 @@ private slots:
 
 signals:
     void send_back();
-    void send_enter(int playerNum);
+    void send_enter(int playerNum, int **canvas);
 };
 
 #endif // SELECTWINDOW_H

@@ -50,9 +50,10 @@ GameSence::GameSence(QString filePath)
 
     file.open(QIODevice::ReadOnly);
 
-    if (file.exists())
+    if (!file.exists())
     {
-        qDebug() << "start to load.";
+        qDebug() << "File didn't exist. Please save a game before load.";
+        return;
     }
 
     QDataStream input(&file);
@@ -105,6 +106,23 @@ void GameSence::setCanvas(int **canvas)
     gameCanvas = canvas;
     init_snakes(playerN, canvas);
     init_wall();
+    update_apple();
+}
+
+void GameSence::update_apple()
+{
+    Apple->clear();
+
+    for (int i = 1; i < CANVAS_WIDTH_PIXEL - 1; i++)
+    {
+        for (int j = 1; j < CANVAS_HEIGHT_PIXEL - 1; j++)
+        {
+            if (gameCanvas[i][j] >= BlockType::Apple)
+            {
+                Apple->push_back(QPair<QPoint, int>(QPoint(i, j), gameCanvas[i][j]));
+            }
+        }
+    }
 }
 
 void GameSence::init_wall()
@@ -175,7 +193,7 @@ void GameSence::getNewApple(int Num)
             type = BlockType::SpeedDown;
         }
 
-        if (typerand < 3 && playerN == 2)
+        if (typerand < 2 && playerN == 2)
         {
             type = BlockType::Exchange;
         }

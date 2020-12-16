@@ -82,7 +82,7 @@ protected slots:
     void receive_load_game();
     void receive_restart();
     void receive_save();
-    void receive_enter_game(int playerNum);
+    void receive_enter_game(int playerNum, int **canvas);
     void receive_load_continue();
 
     void on_press_pause();

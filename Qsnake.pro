@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     deadwindow.cpp \
+    editwindow.cpp \
     functions.cpp \
     gamesence.cpp \
     gamewindow.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
 
 HEADERS += \
     deadwindow.h \
+    editwindow.h \
     functions.h \
     gamesence.h \
     gamewindow.h \

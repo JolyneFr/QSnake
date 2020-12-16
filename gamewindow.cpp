@@ -82,7 +82,7 @@ void GameWindow::set_layout()
     this->setLayout(outerLayout);
 }
 
-void GameWindow::receive_enter_game(int playerNum)
+void GameWindow::receive_enter_game(int playerNum, int **carriedCanvas)
 {
     this->show();
 
@@ -90,8 +90,17 @@ void GameWindow::receive_enter_game(int playerNum)
     PlayerN = (playerNum - 1) % 2 + 1;
     bool ifAuto = (playerNum - 1) / 2;
     thisGame = new GameSence(PlayerN, ifAuto);
-    init_canvas();
-    thisGame->setCanvas(canvas);
+
+    if (carriedCanvas)
+    {
+        canvas = carriedCanvas;
+        thisGame->setCanvas(carriedCanvas);
+    }
+    else
+    {
+        init_canvas();
+        thisGame->setCanvas(canvas);
+    }
 
     isContinue = true;
 
@@ -305,6 +314,15 @@ void GameWindow::receive_continue_game()
 void GameWindow::receive_load_game()
 {
 
+    QFile file("./GameSence");
+
+    if (!file.exists() || file.size() < 10)
+    {
+        QMessageBox::information(NULL, "OH NO!", "No Game Saved.\n Please save a game before load.");
+        emit send_pause();
+        return;
+    }
+
     thisGame = new GameSence("./GameSence");
 
     canvas = thisGame->getCanvas();
@@ -381,6 +399,15 @@ void GameWindow::update_labels()
 
 void GameWindow::receive_load_continue()
 {
+
+    QFile file("./GameSence");
+
+    if (!file.exists())
+    {
+        QMessageBox::information(NULL, "OH NO!", "No Game Saved.\n Please save a game before load.");
+        emit send_pause();
+        return;
+    }
 
 
     thisGame = new GameSence("./GameSence");

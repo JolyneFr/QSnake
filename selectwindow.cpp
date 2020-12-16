@@ -85,29 +85,30 @@ void SelectWindow::on_click_back()
 void SelectWindow::on_click_singleplayer()
 {
     this->hide();
-    emit send_enter(1);
+    emit send_enter(1, carriedCanvas);
 }
 
 void SelectWindow::on_click_multiplayer()
 {
     this->hide();
-    emit send_enter(2);
+    emit send_enter(2, carriedCanvas);
 }
 
 void SelectWindow::on_click_aishow()
 {
     this->hide();
-    emit send_enter(3);
+    emit send_enter(3, carriedCanvas);
 }
 
 void SelectWindow::on_click_aifight()
 {
     this->hide();
-    emit send_enter(4);
+    emit send_enter(4, carriedCanvas);
 }
 
-void SelectWindow::receive_start()
+void SelectWindow::receive_start(int **canvas)
 {
+    carriedCanvas = canvas;
     this->show();
 }
 
