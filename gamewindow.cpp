@@ -24,31 +24,39 @@ void GameWindow::set_layout()
 {
     outerLayout = new QVBoxLayout();
 
-    speedLabel = new QLabel;
+    speedLabel1 = new QLabel;
+    speedLabel2 = new QLabel;
     scoreLabel1 = new QLabel;
     lifeLabel1 = new QLabel;
     scoreLabel2 = new QLabel;
     lifeLabel2 = new QLabel;
 
+    scoreLabel1->setStyleSheet("color:orange");
+    scoreLabel2->setStyleSheet("color:navy");
 
 
-    QHBoxLayout *topLayout = new QHBoxLayout();
+    QVBoxLayout *topLayout = new QVBoxLayout();
+    QHBoxLayout *player1 = new QHBoxLayout();
+    QHBoxLayout *player2 = new QHBoxLayout();
 
-    set_font_point_size(speedLabel, 20);
-    set_font_point_size(scoreLabel1, 15);
-    set_font_point_size(lifeLabel1, 15);
-    set_font_point_size(scoreLabel2, 15);
-    set_font_point_size(lifeLabel2, 15);
+    set_font_point_size(speedLabel1, 20);
+    set_font_point_size(speedLabel2, 20);
+    set_font_point_size(scoreLabel1, 20);
+    set_font_point_size(lifeLabel1, 20);
+    set_font_point_size(scoreLabel2, 20);
+    set_font_point_size(lifeLabel2, 20);
 
 
-    topLayout->addWidget(lifeLabel1);
-    topLayout->addWidget(scoreLabel1);
+    player1->addWidget(lifeLabel1);
+    player1->addWidget(scoreLabel1);
+    player1->addWidget(speedLabel1);
 
-    topLayout->addWidget(speedLabel);
+    player2->addWidget(lifeLabel2);
+    player2->addWidget(scoreLabel2);
+    player2->addWidget(speedLabel2);
 
-    topLayout->addWidget(lifeLabel2);
-    topLayout->addWidget(scoreLabel2);
-
+    topLayout->addLayout(player1);
+    topLayout->addLayout(player2);
     outerLayout->addLayout(topLayout);
 
     outerLayout->addSpacerItem(new QSpacerItem(1, CANVAS_HEIGHT));
@@ -61,17 +69,9 @@ void GameWindow::receive_enter_game(int playerNum)
     this->show();
 
     timeCounter = 0;
-    switch (playerNum) {
-    case 1:
-    case 2:
-        thisGame = new GameSence(playerNum, false);
-        this->PlayerN = playerNum;
-        break;
-    case 3:
-        thisGame = new GameSence(2, true);
-        this->PlayerN = 2;
-        break;
-    }
+    PlayerN = (playerNum - 1) % 2 + 1;
+    bool ifAuto = (playerNum - 1) / 2;
+    thisGame = new GameSence(PlayerN, ifAuto);
     init_canvas();
     thisGame->setCanvas(canvas);
 
@@ -147,8 +147,6 @@ void GameWindow::keyPressEvent(QKeyEvent *event)
         break;
     }
 
-
-
     thisGame->Snake1->changeDir(snake1Dir);
 
     if(thisGame->get_playerN() == 2 && !thisGame->get_ifAuto())
@@ -174,45 +172,89 @@ void GameWindow::timeout()
         thisGame->getNewApple(this->PlayerN);
     }
 
-    if (timeCounter % (thisGame->Snake1->getSpeedCounter()) == 0)
+    move_snake(1);
+    if (thisGame->get_playerN() == 2)
     {
-        thisGame->Snake1->move();
+        move_snake(2);
     }
 
-    if(thisGame->get_playerN() == 2 && timeCounter % (thisGame->Snake2->getSpeedCounter()) == 0)
-    {
-        if (thisGame->get_ifAuto())
-        {
-            thisGame->Snake2->auto_move();
-        }
-        thisGame->Snake2->move();
-    }
+    update_apples();
 
-
-    for (QPair<QPoint, int> apple : *(thisGame->Apple))
-    {
-        QPoint appleP = apple.first;
-        int appleT = apple.second;
-
-        if (canvas[appleP.x()][appleP.y()] != appleT)
-        {
-            thisGame->Apple->clear();
-            thisGame->getNewApple(this->PlayerN);
-        }
-    }
-
-    if (!thisGame->Snake1->qAlive() || (thisGame->get_playerN() == 2 && !thisGame->Snake2->qAlive()))
-    {
-        timer->stop();
-        isContinue = false;
-        qDebug() << "game end!";
-        this->hide();
-        emit send_dead();
-    }
+    check_death();
 
     update_labels();
 
     update();
+
+}
+
+void GameWindow::check_death()
+{
+    int deathNum = 0;
+    if (!thisGame->Snake1->qAlive())
+    {
+        deathNum = 1;
+    }
+
+    if (thisGame->get_playerN() == 2 && !thisGame->Snake2->qAlive())
+    {
+        deathNum = 2;
+    }
+
+    if (deathNum)
+    {
+        timer->stop();
+        isContinue = false;
+
+        this->hide();
+        emit send_dead(deathNum, thisGame->get_playerN(), thisGame->get_ifAuto());
+    }
+}
+
+void GameWindow::update_apples()
+{
+    for (auto apple = thisGame->Apple->begin();
+              apple != thisGame->Apple->end();
+              apple++)
+    {
+        QPoint appleP = apple->first;
+        int appleT = apple->second;
+
+        if (canvas[appleP.x()][appleP.y()] != appleT)
+        {
+            thisGame->Apple->erase(apple);
+            thisGame->getNewApple(1);
+            if (appleT == BlockType::Exchange)
+            {
+                exchange_snakes();
+            }
+        }
+    }
+}
+
+void GameWindow::exchange_snakes()
+{
+    snake * tmp = thisGame->Snake1;
+    thisGame->Snake1 = thisGame->Snake2;
+    thisGame->Snake1->snakeN = 1;
+    thisGame->Snake2 = tmp;
+    thisGame->Snake2->snakeN = 2;
+
+
+}
+
+void GameWindow::move_snake(int N)
+{
+    snake *curSnake = (N == 1) ? thisGame->Snake1 : thisGame->Snake2;
+
+    if (timeCounter % curSnake->getSpeedCounter() == 0)
+    {
+        if (thisGame->get_ifAuto() && thisGame->get_playerN() == N)
+        {
+            curSnake->auto_move();
+        }
+        curSnake->move();
+    }
 
 }
 
@@ -301,18 +343,19 @@ void GameWindow::receive_restart()
 
 void GameWindow::update_labels()
 {
-    speedLabel->setText("SPEED: ");
-
+    speedLabel1->setText("SPEED: " + QString::number((int)thisGame->Snake1->getSpeed()));
     scoreLabel1->setText("Player1: " + QString::number((int)thisGame->Snake1->snakeNode->size() - GameSence::SNAKE_START_LEN));
     lifeLabel1->setText("Life: " + QString::number(thisGame->Snake1->lifeN));
 
     if (thisGame->get_playerN() == 2)
     {
+        speedLabel2->setText("SPEED: " + QString::number((int)thisGame->Snake2->getSpeed()));
         scoreLabel2->setText("Player2: " + QString::number((int)thisGame->Snake2->snakeNode->size() - GameSence::SNAKE_START_LEN));
         lifeLabel2->setText("Life: " + QString::number(thisGame->Snake1->lifeN));
     }
     else
     {
+        speedLabel2->setText("SPEED: N/A");
         scoreLabel2->setText("Player2: N/A");
         lifeLabel2->setText("Life: N/A");
     }

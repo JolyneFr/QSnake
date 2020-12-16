@@ -24,12 +24,11 @@ void snake::init_snake_on_canvas()
 {
     if (snakeN == 1)  //snake1 in the left_up corner
     {
-
         for (int i = 0; i < startL; i++)
         {
             QPoint p(i + 2, 2);
             snakeNode->push_back(p);
-            connectedCanvas[p.x()][p.y()] = 2;
+            connectedCanvas[p.x()][p.y()] = BlockType::Snake1;
         }
         forwardDirect = 1;
 
@@ -39,7 +38,7 @@ void snake::init_snake_on_canvas()
         {
             QPoint p(CANVAS_WIDTH_PIXEL - 3 - i, CANVAS_HEIGHT_PIXEL - 3);
             snakeNode->push_back(p);
-            connectedCanvas[p.x()][p.y()] = 2;
+            connectedCanvas[p.x()][p.y()] = BlockType::Snake2;
         }
         forwardDirect = 3;
 
@@ -77,17 +76,19 @@ void snake::changeDir(int newDir)
 
 void snake::move()
 {
+    BlockType thisType = snakeN == 1 ? Snake1 : Snake2;
     QPoint head = snakeNode->back();
     QPoint rear = snakeNode->front();
     QPoint newHead = head + moveTable[forwardDirect];
-    int blockType = query(newHead);
+    int curBlock = query(newHead);
 
     bool ifExtend = false;       //if eat the red apple, the snake extend (blocktype = 3)
 
-    switch(blockType)
+    switch(curBlock)
     {
-    case 1:
-    case 2:
+    case BlockType::Wall:
+    case BlockType::Snake1:
+    case BlockType::Snake2:
         lifeN--;
         if (lifeN == 0 || if_out_of_bound(newHead))
         {
@@ -95,24 +96,24 @@ void snake::move()
             return;
         }
         break;
-    case 3:
+    case BlockType::Apple:
         ifExtend = true;
         break;
-    case 4:
+    case BlockType::LifeFruit:
         lifeN++;  // +1s
         break;
-    case 5:
+    case BlockType::SpeedUp:
         speed_up();
         break;
-    case 6:
+    case BlockType::SpeedDown:
         speed_down();
         break;
-    case 0:
+    case BlockType::BackGround:
         break;
     }
 
     snakeNode->push_back(newHead);
-    connectedCanvas[newHead.x()][newHead.y()] = 2;
+    connectedCanvas[newHead.x()][newHead.y()] = thisType;
 
 
     /*-----Didn't Eat the Red Apple-----*/
@@ -120,7 +121,7 @@ void snake::move()
     if(!ifExtend)
     {
         snakeNode->pop_front();
-        connectedCanvas[rear.x()][rear.y()] = 0;
+        connectedCanvas[rear.x()][rear.y()] = BlockType::BackGround;
     }
 
 }
@@ -128,6 +129,11 @@ void snake::move()
 int snake::getSpeedCounter()
 {
     return speedCounter;
+}
+
+int snake::getSpeed()
+{
+    return 6 - speedCounter;
 }
 
 void snake::auto_move()
@@ -163,7 +169,7 @@ void snake::auto_move()
         for (int i = 0; i < size; i++)
         {
             curNode = bfsQueue.front();
-            if (query(curNode->p) >= 3)
+            if (query(curNode->p) >= BlockType::Apple)
             {
                 isFound = true;
                 break;
@@ -173,7 +179,8 @@ void snake::auto_move()
             {
                 QPoint nextP = curNode->p + moveTable[j];
 
-                if (query(nextP) != 1 && query(nextP) != 2 && !visCanvas[nextP.x()][nextP.y()])
+                if ((query(nextP) == BlockType::BackGround || query(nextP) >= BlockType::Apple)
+                        && !visCanvas[nextP.x()][nextP.y()])
                 {
                     bfsQueue.push_back(new PointNode(nextP, curNode));
                     visCanvas[nextP.x()][nextP.y()] = true;
@@ -190,7 +197,7 @@ void snake::auto_move()
     }
     delete [] visCanvas;
 
-    if (query(curNode->p) >= 3)
+    if (query(curNode->p) >= BlockType::Apple)
     {
         PointNode *back = curNode;
         while (back->father->p != head)
@@ -202,6 +209,18 @@ void snake::auto_move()
         for (int i = 1; i <= 4; i++)
         {
             if (moveTable[i] == dir)
+            {
+                forwardDirect = i;
+                return;
+            }
+        }
+    }
+    else
+    {
+        for (int i = 1; i <= 4; i++)
+        {
+            QPoint nxt = head + moveTable[i];
+            if (connectedCanvas[nxt.x()][nxt.y()] == 0)
             {
                 forwardDirect = i;
                 return;

@@ -27,11 +27,12 @@ int main(int argc, char *argv[])
     QObject::connect(&p, SIGNAL(send_continue()), &g, SLOT(receive_continue_game()));
     QObject::connect(&p, SIGNAL(send_save()), &g, SLOT(receive_save()));
     QObject::connect(&p, SIGNAL(send_load()), &g, SLOT(receive_load_game()));
-    QObject::connect(&g, SIGNAL(send_dead()), &d, SLOT(receive_dead()));
+    QObject::connect(&g, SIGNAL(send_dead(int, int, bool)), &d, SLOT(receive_dead(int, int, bool)));
     QObject::connect(&d, SIGNAL(send_restart()), &g, SLOT(receive_restart()));
     QObject::connect(&d, SIGNAL(send_load()), &g, SLOT(receive_load_game()));
     QObject::connect(&d, SIGNAL(send_back()), &w, SLOT(receive_back()));
     QObject::connect(&w, SIGNAL(send_load_continue()), &g, SLOT(receive_load_continue()));
+    QObject::connect(&p, SIGNAL(send_back()), &w, SLOT(receive_back()));
 
     return a.exec();
 }

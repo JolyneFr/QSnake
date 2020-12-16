@@ -7,6 +7,7 @@
 #include <QSet>
 #include <vector>
 #include <QDataStream>
+#include "functions.h"
 
 class snake : public QObject
 {
@@ -21,6 +22,7 @@ public:
     void auto_move();
     void init_snake_on_canvas();
     int getSpeedCounter();
+    int getSpeed();
     int &direct();
     bool &qAlive();     //query if alive
     int snakeN;        //nth snake (1 or 2)

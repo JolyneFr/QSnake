@@ -18,7 +18,7 @@ void DeadWindow::set_layout()
     outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 8));
 
     QHBoxLayout *topicLayout = new QHBoxLayout();
-    QLabel * start = new QLabel("Dead? You Idiot!");
+    start = new QLabel("Dead? You Idiot!");
     start->resize(500, 100);
     start->setAlignment(Qt::AlignCenter);
     set_font_point_size(start, 50);
@@ -59,9 +59,41 @@ void DeadWindow::set_layout()
 
 }
 
-void DeadWindow::receive_dead()
+void DeadWindow::receive_dead(int deathN, int PlayerN, bool ifAuto)
 {
     this->show();
+    if (deathN == 1 && PlayerN == 1 && !ifAuto)
+    {
+        start->setText(tr("You Died, Idiot!"));
+        return;
+    }
+    if (deathN == 1 && PlayerN == 1 && ifAuto)
+    {
+        start->setText(tr("Delamain ain't Clever Enough..."));
+        set_font_point_size(start, 33);
+        return;
+    }
+    if (deathN == 1 && PlayerN == 2 && !ifAuto)
+    {
+        start->setText(tr("Player2 Wins!"));
+        return;
+    }
+    if (deathN == 1 && PlayerN == 2 && ifAuto)
+    {
+        start->setText(tr("Delamain Just Beat You!"));
+        set_font_point_size(start, 40);
+        return;
+    }
+    if (deathN == 2 && !ifAuto)
+    {
+        start->setText(tr("Player1 Wins!"));
+        return;
+    }
+    if (deathN == 2 && ifAuto)
+    {
+        start->setText(tr("You Beat Delamain!"));
+        return;
+    }
 }
 
 void DeadWindow::on_click_restart()

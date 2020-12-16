@@ -17,7 +17,7 @@ public:
 
 private:
     static const int WINDOW_WIDTH = 700;
-    static const int WINDOW_HEIGHT = 600;
+    static const int WINDOW_HEIGHT = 700;
 
     void set_layout();
 

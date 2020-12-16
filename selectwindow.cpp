@@ -41,6 +41,11 @@ void SelectWindow::set_layout()
     multiPlayer->resize(300, 100);
     connect(multiPlayer, &QPushButton::clicked, this, &SelectWindow::on_click_multiplayer);
 
+    myButton * aiShow = new myButton();
+    aiShow->setText(tr("Just Show Delamain"));
+    aiShow->resize(300, 100);
+    connect(aiShow, &QPushButton::clicked, this, &SelectWindow::on_click_aishow);
+
     myButton * aiFight = new myButton();
     aiFight->setText(tr("Fight with Delamain!"));
     aiFight->resize(300, 100);
@@ -49,6 +54,8 @@ void SelectWindow::set_layout()
     buttons->addWidget(singlePlayer);
     buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
     buttons->addWidget(multiPlayer);
+    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
+    buttons->addWidget(aiShow);
     buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
     buttons->addWidget(aiFight);
     buttonLayout->addLayout(buttons);
@@ -87,10 +94,16 @@ void SelectWindow::on_click_multiplayer()
     emit send_enter(2);
 }
 
-void SelectWindow::on_click_aifight()
+void SelectWindow::on_click_aishow()
 {
     this->hide();
     emit send_enter(3);
+}
+
+void SelectWindow::on_click_aifight()
+{
+    this->hide();
+    emit send_enter(4);
 }
 
 void SelectWindow::receive_start()

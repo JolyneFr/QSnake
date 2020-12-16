@@ -13,7 +13,6 @@
 #include <string.h>
 #include <QString>
 #include <QDialog>
-#include "functions.h"
 #include "gamesence.h"
 #include "mybutton.h"
 
@@ -29,7 +28,7 @@ protected:
 
 private:
     static const int WINDOW_WIDTH = 600;
-    static const int WINDOW_HEIGHT = 800;
+    static const int WINDOW_HEIGHT = 750;
     static const int CANVAS_WIDTH = 600;
     static const int CANVAS_HEIGHT = 600;
     static const int pixel = 30;
@@ -41,9 +40,10 @@ private:
     QLabel *scoreLabel2;
     QLabel *lifeLabel1;
     QLabel *lifeLabel2;
-    QLabel *speedLabel;
+    QLabel *speedLabel1;
+    QLabel *speedLabel2;
 
-    QString colorType[7] = {"white", "grey", "orange", "red", "green", "blue", "purple"};
+    QString colorType[9] = {"white", "grey", "orange", "navy", "red", "green", "blue", "purple", "pink"};
 
     int timeCounter;
     int height_pixel;
@@ -64,6 +64,10 @@ private:
     void paint_canvas();
     void set_layout();
     void update_labels();
+    void update_apples();
+    void check_death();
+    void exchange_snakes();
+    void move_snake(int);
     void load_game(int gameIndex);
     void restart();
 
@@ -71,7 +75,7 @@ private:
 
 signals:
     void send_pause();
-    void send_dead();
+    void send_dead(int i, int n, bool f);
 
 protected slots:
     void receive_continue_game();

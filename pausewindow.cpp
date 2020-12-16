@@ -16,7 +16,7 @@ void PauseWindow::set_layout()
 
     QVBoxLayout *outerLayout = new QVBoxLayout();
 
-    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 8));
+    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 20));
 
     QHBoxLayout *topicLayout = new QHBoxLayout();
     QLabel * start = new QLabel("PAUSE!");
@@ -26,7 +26,7 @@ void PauseWindow::set_layout()
     topicLayout->addWidget(start,5);
     outerLayout->addLayout(topicLayout);
 
-    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 10));
+    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 20));
 
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     buttonLayout->addSpacerItem(new QSpacerItem(WINDOW_WIDTH / 5, 1));
@@ -42,20 +42,26 @@ void PauseWindow::set_layout()
     connect(saveButton, &QPushButton::clicked, this, &PauseWindow::on_click_save);
 
     myButton * loadButton = new myButton();
-    loadButton->setText("Load Game");
+    loadButton->setText(tr("Load Game"));
     connect(loadButton, &QPushButton::clicked, this, &PauseWindow::on_click_load);
 
+    myButton * backButton = new myButton();
+    backButton->setText(tr("Back to MainWindow"));
+    connect(backButton, &QPushButton::clicked, this, &PauseWindow::on_click_back);
+
     buttons->addWidget(continueButton);
-    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 25));
+    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
     buttons->addWidget(saveButton);
-    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 25));
+    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
     buttons->addWidget(loadButton);
+    buttons->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));
+    buttons->addWidget(backButton);
     buttonLayout->addLayout(buttons);
     buttonLayout->addSpacerItem(new QSpacerItem(WINDOW_WIDTH / 5, 1));
 
     outerLayout->addLayout(buttonLayout);
 
-    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 6));
+    outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 10));
 
     this->setLayout(outerLayout);
 }
@@ -74,6 +80,12 @@ void PauseWindow::on_click_continue()
 void PauseWindow::on_click_save()
 {
     emit send_save();
+}
+
+void PauseWindow::on_click_back()
+{
+    this->hide();
+    emit send_back();
 }
 
 void PauseWindow::on_click_load()

@@ -17,7 +17,7 @@ public:
 
 private:
     static const int WINDOW_WIDTH = 700;
-    static const int WINDOW_HEIGHT = 600;
+    static const int WINDOW_HEIGHT = 700;
 
     void set_layout();
 
@@ -29,6 +29,7 @@ private slots:
     void on_click_singleplayer();
     void on_click_multiplayer();
     void on_click_aifight();
+    void on_click_aishow();
 
 signals:
     void send_back();

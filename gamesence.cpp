@@ -9,15 +9,12 @@ GameSence::GameSence(int playerNum, bool f)
 
     playerN = playerNum;
     ifAuto = f;
-    startLen = SNAKE_START_LEN;
 }
 
 GameSence::GameSence(GameSence *other)
 {
     playerN = other->playerN;
-    startLen = other->startLen;
     ifAuto = other->ifAuto;
-    Wall = new std::vector<QPoint>(*(other->Wall));
     Apple = new std::vector<QPair<QPoint, int>>(*(other->Apple));
 
     gameCanvas = new int*[CANVAS_WIDTH_PIXEL];
@@ -60,12 +57,11 @@ GameSence::GameSence(QString filePath)
 
     QDataStream input(&file);
 
-    input >> playerN >> startLen >> ifAuto;
+    input >> playerN >> ifAuto;
 
-    std::vector<QPoint>::size_type wall_size;
     std::vector<QPair<QPoint, int>>::size_type apple_size;
 
-    input >> wall_size >> apple_size;
+    input >> apple_size;
 
     gameCanvas = new int*[CANVAS_WIDTH_PIXEL];
 
@@ -78,15 +74,6 @@ GameSence::GameSence(QString filePath)
             input >> gameCanvas[i][j];
         }
 
-    }
-
-    Wall = new std::vector<QPoint>;
-
-    for (int i = 0; i < (int)wall_size; i++)
-    {
-        int x, y;
-        input >> x >> y;
-        Wall->push_back(QPoint(x, y));
     }
 
     Apple = new std::vector<QPair<QPoint, int>>;
@@ -122,22 +109,16 @@ void GameSence::setCanvas(int **canvas)
 
 void GameSence::init_wall()
 {
-    Wall = new std::vector<QPoint>;
-
     for (int i = 0; i < CANVAS_HEIGHT_PIXEL; i++)
     {
-        Wall->push_back(QPoint(0, i));
-        Wall->push_back(QPoint(CANVAS_WIDTH_PIXEL - 1, i));
-        gameCanvas[0][i] = 1;
-        gameCanvas[CANVAS_WIDTH_PIXEL - 1][i] = 1;
+        gameCanvas[0][i] = BlockType::Wall;
+        gameCanvas[CANVAS_WIDTH_PIXEL - 1][i] = BlockType::Wall;
     }
 
     for (int i = 1; i < CANVAS_WIDTH_PIXEL - 1; i++)
     {
-        Wall->push_back(QPoint(i, 0));
-        Wall->push_back(QPoint(i, CANVAS_HEIGHT_PIXEL - 1));
-        gameCanvas[i][0] = 1;
-        gameCanvas[i][CANVAS_HEIGHT_PIXEL - 1] = 1;
+        gameCanvas[i][0] = BlockType::Wall;
+        gameCanvas[i][CANVAS_HEIGHT_PIXEL - 1] = BlockType::Wall;
     }
 }
 
@@ -179,22 +160,27 @@ void GameSence::getNewApple(int Num)
 
         if(typerand < 13)
         {
-            type = 3;
+            type = BlockType::Apple;
         }
         else if(typerand < 15)
         {
-            type = 4;
+            type = BlockType::LifeFruit;
         }
         else if(typerand < 17)
         {
-            type = 5;
+            type = BlockType::SpeedUp;
         }
         else
         {
-            type = 6;
+            type = BlockType::SpeedDown;
         }
 
-        if (gameCanvas[x][y] == 0)
+        if(typerand > 15 && playerN == 2)
+        {
+            type = BlockType::Exchange;
+        }
+
+        if (gameCanvas[x][y] == BlockType::BackGround)
         {
             Apple->push_back(QPair<QPoint, int>(QPoint(x, y), type));
             gameCanvas[x][y] = type;
@@ -222,9 +208,9 @@ void GameSence::save_sence_to_file(QString filePath)
 
     QDataStream output(&file);
 
-    output << playerN << startLen << ifAuto;
+    output << playerN << ifAuto;
 
-    output << Wall->size() << Apple->size();
+    output << Apple->size();
 
     for (int i = 0; i < CANVAS_WIDTH_PIXEL; i++)
     {
@@ -234,17 +220,13 @@ void GameSence::save_sence_to_file(QString filePath)
         }
     }
 
-    for (QPoint p : *Wall)
-    {
-        output << p.x() << p.y();
-    }
-
     for (auto apple : *Apple)
     {
         QPoint appleP = apple.first;
         int appleT = apple.second;
         output << appleP.x() << appleP.y() << appleT;
     }
+
 
     output << *Snake1;
 

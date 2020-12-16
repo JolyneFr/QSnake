@@ -1,13 +1,11 @@
 #ifndef DEADWINDOW_H
 #define DEADWINDOW_H
 
-#include <QMainWindow>
-#include <QPushButton>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include "mybutton.h"
 #include <QDialog>
+#include "mybutton.h"
 
 class DeadWindow : public QDialog
 {
@@ -16,11 +14,15 @@ public:
     explicit DeadWindow(QWidget *parent = nullptr);
 
 private:
+
+    /*     preset data to init the window     */
+    /*     free to change                     */
     static const int WINDOW_WIDTH = 700;
     static const int WINDOW_HEIGHT = 600;
 
+    /*     window layout     */
     void set_layout();
-
+    QLabel * start;
     QVBoxLayout *outerLayout;
 
 signals:
@@ -29,7 +31,7 @@ signals:
     void send_back();
 
 private slots:
-    void receive_dead();
+    void receive_dead(int i, int n, bool f);
     void on_click_restart();
     void on_click_load();
     void on_click_back();

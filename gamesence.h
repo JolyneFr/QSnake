@@ -13,15 +13,23 @@ class GameSence: public QObject
 {
     Q_OBJECT
 private:
-
+    /*     number of snakes on canvas     */
+    /*     can only be 1 or 2             */
     int playerN;
+
+    /*     true when the snake2 is Delamain     */
     bool ifAuto;
+
+    /*     the pointer to the canvas     */
+    /*     stored in gameWindow, gameSence and snakes at the same time*/
     int **gameCanvas;
 
     static const int CANVAS_WIDTH_PIXEL = 20;
     static const int CANVAS_HEIGHT_PIXEL = 20;
 
     void init_wall();
+
+    /*     pre-draw snakes on the canvas     */
     void init_snakes(int playerNum, int **canvas);
 
 
@@ -31,14 +39,20 @@ public:
 
     snake *Snake1;
     snake *Snake2;
-    int startLen;
 
-    std::vector<QPoint> *Wall;
+    /*     store apples on canvas     */
+    /*     to check if apple was eaten     */
     std::vector<QPair<QPoint, int>> *Apple;
 
-    GameSence(int playerNum, bool f);
+
+    /*     constructors:     */
+    /*  1. init constrcut     */
+    /*  2. copy constrcut     */
+    /*  3. file constrcut     */
+    GameSence(int playerNum, bool ifAuto);
     GameSence(GameSence *other);
     GameSence(QString filePath);
+
     void getNewApple(int);
     void setCanvas(int **canvas);
     void save_sence_to_file(QString filePath);
