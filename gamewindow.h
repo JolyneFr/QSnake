@@ -27,7 +27,7 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private:
-    static const int WINDOW_WIDTH = 600;
+    static const int WINDOW_WIDTH = 800;
     static const int WINDOW_HEIGHT = 750;
     static const int CANVAS_WIDTH = 600;
     static const int CANVAS_HEIGHT = 600;
@@ -35,7 +35,7 @@ private:
     static const int times = 30;
     static const int APPLE_TIME_COUNTER = 50;
 
-    QVBoxLayout *outerLayout;
+    QHBoxLayout *outerLayout;
     QLabel *scoreLabel1;
     QLabel *scoreLabel2;
     QLabel *lifeLabel1;

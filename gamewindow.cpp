@@ -2,6 +2,8 @@
 #include <QDebug>
 #include <QMessageBox>
 
+QString BlockName[9] = {"BackGround", "Wall", "Snake1", "Snake2", "Apple", "LifeFruit", "SpeedUp", "SpeedDown", "Exchange"};
+
 GameWindow::GameWindow(QWidget *parent) : QDialog(parent)
 {
 
@@ -22,7 +24,7 @@ GameWindow::GameWindow(QWidget *parent) : QDialog(parent)
 
 void GameWindow::set_layout()
 {
-    outerLayout = new QVBoxLayout();
+    outerLayout = new QHBoxLayout();
 
     speedLabel1 = new QLabel;
     speedLabel2 = new QLabel;
@@ -30,6 +32,8 @@ void GameWindow::set_layout()
     lifeLabel1 = new QLabel;
     scoreLabel2 = new QLabel;
     lifeLabel2 = new QLabel;
+
+    QVBoxLayout *leftLayout = new QVBoxLayout();
 
     scoreLabel1->setStyleSheet("color:orange");
     scoreLabel2->setStyleSheet("color:navy");
@@ -57,9 +61,23 @@ void GameWindow::set_layout()
 
     topLayout->addLayout(player1);
     topLayout->addLayout(player2);
-    outerLayout->addLayout(topLayout);
+    leftLayout->addLayout(topLayout);
+    leftLayout->addSpacerItem(new QSpacerItem(CANVAS_WIDTH, CANVAS_HEIGHT));
 
-    outerLayout->addSpacerItem(new QSpacerItem(1, CANVAS_HEIGHT));
+    outerLayout->addLayout(leftLayout);
+
+    QVBoxLayout *rightLayout = new QVBoxLayout();
+
+    for (int i = 1; i < 9; i++)
+    {
+        QLabel *color = new QLabel;
+        color->setText(BlockName[i]);
+        set_font_point_size(color, 20);
+        color->setStyleSheet("color:" + colorType[i]);
+        rightLayout->addWidget(color);
+    }
+
+    outerLayout->addLayout(rightLayout);
 
     this->setLayout(outerLayout);
 }

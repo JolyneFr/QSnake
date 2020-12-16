@@ -175,7 +175,7 @@ void GameSence::getNewApple(int Num)
             type = BlockType::SpeedDown;
         }
 
-        if(typerand > 15 && playerN == 2)
+        if (typerand < 3 && playerN == 2)
         {
             type = BlockType::Exchange;
         }
