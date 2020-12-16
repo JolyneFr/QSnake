@@ -38,3 +38,4 @@ Especially my dear TA, who jugdes my final score.
 7. I'm working **desperately** on canvas-edit and completion of comments. So just be paitient.
 
 ## Thanks for Playing my First Qt Game
+JoyneFr 2020/12/16
