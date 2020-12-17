@@ -24,6 +24,8 @@ GameWindow::GameWindow(QWidget *parent) : QDialog(parent)
 
 void GameWindow::set_layout()
 {
+    setStyleSheet("background-color: seashell");
+
     outerLayout = new QHBoxLayout();
 
     speedLabel1 = new QLabel;
@@ -73,7 +75,13 @@ void GameWindow::set_layout()
         QLabel *color = new QLabel;
         color->setText(BlockName[i]);
         set_font_point_size(color, 20);
-        color->setStyleSheet("color:" + colorType[i]);
+        color->setStyleSheet("border-style:outset;"
+                             "border-width:4px;"
+                             "border-radius:10px;"
+                             "border-color:rgba(100,100,100,100);"
+                             "color:" + colorType[i]);
+
+        color->setAlignment(Qt::AlignCenter);
         rightLayout->addWidget(color);
     }
 

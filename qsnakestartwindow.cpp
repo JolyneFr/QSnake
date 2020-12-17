@@ -17,6 +17,8 @@ QsnakeStartWindow::QsnakeStartWindow(QWidget *parent)
 void QsnakeStartWindow::set_layout()
 {
 
+    setStyleSheet("background-color: seashell");
+
     QVBoxLayout *outerLayout = new QVBoxLayout;
 
     //outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 70));

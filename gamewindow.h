@@ -43,7 +43,7 @@ private:
     QLabel *speedLabel1;
     QLabel *speedLabel2;
 
-    QString colorType[9] = {"white", "grey", "orange", "navy", "red", "green", "blue", "purple", "pink"};
+    QString colorType[9] = {"white", "grey", "orange", "navy", "red", "green", "blue", "purple", "deeppink"};
 
     int timeCounter;
     int height_pixel;

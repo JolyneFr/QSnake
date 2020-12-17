@@ -1,7 +1,7 @@
 #include "editwindow.h"
 #include <QDebug>
 
-QString colorType[9] = {"white", "grey", "orange", "navy", "red", "green", "blue", "purple", "pink"};
+QString colorType[9] = {"white", "grey", "orange", "navy", "red", "green", "blue", "purple", "deeppink"};
 QString blockName[9] = {"BackGround", "Wall", "Snake1", "Snake2", "Apple", "LifeFruit", "SpeedUp", "SpeedDown", "Exchange"};
 
 EditWindow::EditWindow(QWidget *parent) : QDialog(parent)
@@ -17,16 +17,14 @@ EditWindow::EditWindow(QWidget *parent) : QDialog(parent)
 
 void EditWindow::set_layout()
 {
+
+    setStyleSheet("background-color: seashell");
+
     outerLayout = new QHBoxLayout();
-
-
 
     QVBoxLayout *leftLayout = new QVBoxLayout();
 
     QHBoxLayout *topLayout = new QHBoxLayout();
-
-
-
 
     leftLayout->addLayout(topLayout);
 

@@ -14,6 +14,8 @@ PauseWindow::PauseWindow(QWidget *parent) : QDialog(parent)
 void PauseWindow::set_layout()
 {
 
+    setStyleSheet("background-color: seashell");
+
     QVBoxLayout *outerLayout = new QVBoxLayout();
 
     outerLayout->addSpacerItem(new QSpacerItem(1, WINDOW_HEIGHT / 20));
