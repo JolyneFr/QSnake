@@ -39,7 +39,7 @@ Especially my dear TA, who grades my final work.
     - Exchange Fruits are only available in MultiPlayer games(vs Player2 or Delamain)
 2. The number of fruits on the canvas is set to PlayerNum by default. When a fruit is eaten, another fruit appears on a random postion within the canvas. So if you want more fruits to exist at the same time, just **use edit function** to add as many as you want.
 3. You **CAN'T** move through the boundary (You will die if you do so).
-4. When your head crashes into another snake's body (or yourself's), you can consume one life to move through one brick.  
+4. When your head crashes into another snake's body (or yourself's), you can consume one life to **BREAK** one brick.  
 5. The GameSence **WON'T** be saved implicitly, so please do it manually.
 6. Delamain's algorithm may be simple, but beating it is kind of difficult.
 7. The implement of QTimer::timeout() and QKeyEvent::keyPressEvent() is not connected, which means your death may occur **before** you see it on canvas.
