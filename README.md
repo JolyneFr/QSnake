@@ -1,7 +1,8 @@
 # QSnake
 Made By **JolyneFr** / 51902190390  
 SJTU SE2019 SEP Project1  
-**This game was written only for HW, any other feature was not included.**
+**This game was written only for HW, ANY other feature was NOT included.**  
+**Thanks for Understanding**
 ## Completed Tasks ##
 ### 1.Basic Features  
 - Start Menu
