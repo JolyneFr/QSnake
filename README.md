@@ -19,10 +19,12 @@ SJTU SE2019 SEP Project1
     - Edition is available in Pause and Start windows.
     - Remember to ask for permission if you are playing with friends.
 - Simple AI-Snake: **"Delamain"**
-    - Using BFS Algorithm, treated all fruits equally.
+    - Using BFS Algorithm, treated all fruits equally.  
+    
+**All required tasks are included.**
     
 ## Game Guide
-I sincerely hope **EVERYONE** reads this guide before playing my QSnake.  
+I sincerely hope that **EVERYONE** reads this guide before playing my QSnake.  
 Especially my dear TA, who grades my final work.  
 1. Bricks represented by different colors are shown in the gameWindow.  
     - <font color = #FFA500> Snake1 </font>,
@@ -33,13 +35,13 @@ Especially my dear TA, who grades my final work.
   <font color = #800080> SpeedDown </font>,
   <font color = #FFC)CB> Exchange </font>.  
     - Exchange Fruits are only available in MultiPlayer games(vs Player2 or Delamain)
-2. Number of fruits on the canvas is defaulted set to PlayerNum. When a fruit is eaten, another fruit appears on a random postion within the canvas. So if you want more fruits exist at the same time, just **use edit function** to add as many as you want.
+2. The number of fruits on the canvas is set to PlayerNum by default. When a fruit is eaten, another fruit appears on a random postion within the canvas. So if you want more fruits to exist at the same time, just **use edit function** to add as many as you want.
 3. You **CAN'T** move through the boundary (You will die if you do so).
-4. When your head crashes into another snake's body (or yourself's), you can pay one life to move through one brick.  
-5. This game **WON'T** implicitly save the gameSence, please do it manually.
+4. When your head crashes into another snake's body (or yourself's), you can consume one life to move through one brick.  
+5. The GameSence **WON'T** be saved implicitly, so please do it manually.
 6. Delamain's algorithm may be simple, but beating it is kind of difficult.
-7. The implement of QTimer::timeout() and QKeyEvent::keyPressEvent() aren't connected, which means your death may occur **before** you see it on canvas.
-8. I'm working **desperately** on completion of comments. So just be paitient.
+7. The implement of QTimer::timeout() and QKeyEvent::keyPressEvent() is not connected, which means your death may occur **before** you see it on canvas.
+8. I'm working **desperately** on completion of comments. So just be patient.
 
 ## Thanks for Playing My First Qt Game
 JoyneFr 2020/12/16
