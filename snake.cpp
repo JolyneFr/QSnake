@@ -92,7 +92,10 @@ void snake::move()
     case BlockType::Snake1:
     case BlockType::Snake2:
         lifeN--;
-        overlapNode->push_back(newHead);
+        if (query(newHead) == thisType)
+        {
+            overlapNode->push_back(newHead);
+        }
         if (lifeN == 0 || if_out_of_bound(newHead))
         {
             isAlive = false;
