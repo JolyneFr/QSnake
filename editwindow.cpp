@@ -1,6 +1,11 @@
 #include "editwindow.h"
 #include <QDebug>
 
+
+/*
+ * these 2 QString arrays are used to paint canvas
+ * notice that they have the same size
+ */
 QString colorType[9] = {"white", "grey", "orange", "navy", "red", "green", "blue", "purple", "deeppink"};
 QString blockName[9] = {"BackGround", "Wall", "Snake1", "Snake2", "Apple", "LifeFruit", "SpeedUp", "SpeedDown", "Exchange"};
 
@@ -10,7 +15,6 @@ EditWindow::EditWindow(QWidget *parent) : QDialog(parent)
     setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
     set_layout();
-
     init_canvas();
 
 }
@@ -54,17 +58,17 @@ void EditWindow::set_layout()
 
     for (int i = 0; i < 9; i++)
     {
-        if (i == 2 || i == 3) continue;
+        if (i == 2 || i == 3) continue; // can't edit snake here
 
         myButton * color = new myButton();
         color->setCheckable(true);
         color->setText(blockName[i]);
         set_font_point_size(color, 20);
-        //color->setText("color:" + colorType[i]);
+
         rightLayout->addWidget(color);
         rightLayout->addSpacerItem(new QSpacerItem(1, 12));
         colorButtons->addButton(color);
-        colorButtons->setId(color, i);
+        colorButtons->setId(color, i); // set painterId = i
     }
 
     outerLayout->addLayout(rightLayout);
@@ -79,11 +83,15 @@ void EditWindow::init_canvas()
 
     canvas = new int*[width_pixel];
 
+    // clear the canvas
+
     for(int i = 0; i < width_pixel; i++)
     {
         canvas[i] = new int[height_pixel];
         memset(canvas[i], 0, height_pixel *sizeof(int));
     }
+
+    // draw the bounds
 
     for (int i = 0; i < height_pixel; i++)
     {
@@ -141,7 +149,7 @@ void EditWindow::mousePressEvent(QMouseEvent *event)
         return;
     }
 
-    qDebug() << "success: " << painterColorType();
+    //qDebug() << "success: " << painterColorType();
 
     canvas[x][y] = painterColorType();
 
@@ -155,14 +163,15 @@ int EditWindow::painterColorType()
 
 void EditWindow::receive_edit(int _caller, int **curCanvas)
 {
-    caller = _caller;
+    caller = _caller;  // 1 for start window, 2 for pause window
+
     if (caller == 1)
     {
-        init_canvas();
+        init_canvas(); // called from start window: empty canvas
     }
     else
     {
-        canvas = curCanvas;
+        canvas = curCanvas; // called from pause: current game canvas
     }
 
     this->show();
@@ -171,6 +180,7 @@ void EditWindow::receive_edit(int _caller, int **curCanvas)
 void EditWindow::on_click_run()
 {
     this->hide();
+
     if (caller == 1)
     {
         emit send_start(canvas);

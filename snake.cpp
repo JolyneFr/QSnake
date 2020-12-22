@@ -12,6 +12,10 @@ snake::snake(int snakeNum, int startLen)
     snakeNode = new QQueue<QPoint>;
     overlapNode = new QQueue<QPoint>;
 
+    /*
+     * init the movetable here
+     * because I want to pass the compile
+     */
     moveTable = new QPoint[5];
     moveTable[0] = QPoint(0, 0);
     moveTable[1] = QPoint(1, 0);
@@ -55,7 +59,7 @@ snake::snake(snake *other)  //copy construct
     snakeNode = new QQueue<QPoint>(*(other->snakeNode));
     overlapNode = new QQueue<QPoint>(*(other->overlapNode));
 
-    moveTable = other->moveTable;
+    moveTable = other->moveTable; // moveTable is fixed, so copy the pointer is available
     forwardDirect = other->forwardDirect;
     isAlive = other->isAlive;
 }
@@ -153,11 +157,14 @@ int snake::getSpeed()
 void snake::auto_move()
 {
 
+    // define a struct for bfs & find path
     struct PointNode {
         QPoint p;
         PointNode *father;
         PointNode(QPoint _p, PointNode* _f): p(_p), father(_f) {}
     };
+
+    /*     BFS Algorithm down here     */
 
     QQueue<PointNode *> bfsQueue;
 
@@ -229,7 +236,7 @@ void snake::auto_move()
             }
         }
     }
-    else
+    else  // if didn't find the apple, just go for survive
     {
         for (int i = 1; i <= 4; i++)
         {
@@ -263,6 +270,11 @@ int &snake::direct()
 {
     return forwardDirect;
 }
+
+/*
+ * firend functions >> and << are organised in certain order
+ * DO NOT change it
+ */
 
 QDataStream &operator<<(QDataStream & output, const snake &obj)
 {

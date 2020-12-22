@@ -94,8 +94,16 @@ void GameWindow::receive_enter_game(int playerNum, int **carriedCanvas)
     this->show();
 
     timeCounter = 0;
+
+    /*
+     * translate PlayerNum to PlayerN & ifAuto
+     * this part of code is ugly
+     * just to spare one arg
+     * but I don't want to fix it
+     */
     PlayerN = (playerNum - 1) % 2 + 1;
     bool ifAuto = (playerNum - 1) / 2;
+
     thisGame = new GameSence(PlayerN, ifAuto);
 
     if (carriedCanvas)
@@ -134,14 +142,11 @@ void GameWindow::init_canvas()
 
 void GameWindow::paintEvent(QPaintEvent *event)
 {
-
     paint_canvas();
-
 }
 
 void GameWindow::paint_canvas()
 {
-
     QPainter painter(this);
     painter.translate(0, WINDOW_HEIGHT - CANVAS_HEIGHT);
 
@@ -215,11 +220,8 @@ void GameWindow::timeout()
     }
 
     update_apples();
-
     check_death();
-
     update_labels();
-
     update();
 
 }
@@ -256,7 +258,7 @@ void GameWindow::update_apples()
         QPoint appleP = apple->first;
         int appleT = apple->second;
 
-        if (canvas[appleP.x()][appleP.y()] != appleT)
+        if (canvas[appleP.x()][appleP.y()] != appleT)  // apple was eaten
         {
             thisGame->Apple->erase(apple);
             thisGame->getNewApple(1);
@@ -275,8 +277,6 @@ void GameWindow::exchange_snakes()
     thisGame->Snake1->snakeN = 1;
     thisGame->Snake2 = tmp;
     thisGame->Snake2->snakeN = 2;
-
-
 }
 
 void GameWindow::move_snake(int N)
@@ -296,13 +296,8 @@ void GameWindow::move_snake(int N)
 
 void GameWindow::receive_save()
 {
-    GameSence *currentGame = new GameSence(thisGame);
-
     thisGame->save_sence_to_file("./GameSence");
-
     QMessageBox::information(NULL, "OH YEAH!", "Game Saved Successfully");
-
-
 }
 
 void GameWindow::on_press_pause()
@@ -325,11 +320,8 @@ void GameWindow::receive_load_game()
     load_game("./GameSence");
 
     update();
-
     this->show();
-
     isContinue = true;
-
     timer->start(times);
 }
 
@@ -345,7 +337,6 @@ void GameWindow::load_game(QString filePath)
     }
 
     thisGame = new GameSence(filePath);
-
     canvas = thisGame->getCanvas();
 }
 
@@ -373,9 +364,7 @@ void GameWindow::restart()
 {
 
     timeCounter = 0;
-
     bool ifAuto = thisGame->get_ifAuto();
-
     thisGame = new GameSence(PlayerN, ifAuto);
 
     if (defaultCanvas)
@@ -439,9 +428,7 @@ void GameWindow::receive_load_continue()
 
 
     thisGame = new GameSence("./GameSence");
-
     canvas = thisGame->getCanvas();
-
     PlayerN = thisGame->get_playerN();
 
     update();

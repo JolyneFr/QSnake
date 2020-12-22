@@ -4,7 +4,6 @@
 
 GameSence::GameSence(int playerNum, bool f)
 {
-
     Apple = new std::vector<QPair<QPoint, int>>;
 
     playerN = playerNum;
@@ -15,7 +14,7 @@ GameSence::GameSence(GameSence *other)
 {
     playerN = other->playerN;
     ifAuto = other->ifAuto;
-    Apple = new std::vector<QPair<QPoint, int>>(*(other->Apple));
+    Apple = new std::vector<QPair<QPoint, int>>(*(other->Apple)); // copy ELEMENTS
 
     gameCanvas = new int*[CANVAS_WIDTH_PIXEL];
     for (int i = 0; i < CANVAS_WIDTH_PIXEL; i++)
@@ -95,6 +94,10 @@ GameSence::GameSence(QString filePath)
         Snake2 = new snake(0, 0);
         input >> *Snake2;
         Snake2->setCanvas(gameCanvas);
+    }
+    else
+    {
+        Snake2 = nullptr;
     }
 
 

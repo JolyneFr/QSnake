@@ -64,6 +64,11 @@ void DeadWindow::set_layout()
 void DeadWindow::receive_dead(int deathN, int PlayerN, bool ifAuto)
 {
     this->show();
+
+    /*
+     * edit death message here
+     */
+
     if (deathN == 1 && PlayerN == 1 && !ifAuto)
     {
         start->setText(tr("You Died, Idiot!"));
