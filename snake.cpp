@@ -304,7 +304,8 @@ QDataStream &operator>>(QDataStream & input, snake &obj)
 {
     int snake_length, overlap_length;
 
-    input >> obj.snakeN >> obj.lifeN >> obj.direct() >> obj.qAlive() >> snake_length >> obj.speedCounter >> overlap_length;
+    input >> obj.snakeN >> obj.lifeN >> obj.direct() >> obj.qAlive()
+          >> snake_length >> obj.speedCounter >> overlap_length;
 
     obj.snakeNode->clear();
     obj.overlapNode->clear();
