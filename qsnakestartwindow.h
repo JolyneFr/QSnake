@@ -16,11 +16,18 @@ public:
     QsnakeStartWindow(QWidget *parent = nullptr);
 
 private:
+
+    /*
+     *    preset data to init the window
+     *    free to change
+     */
     static const int WINDOW_WIDTH = 700;
     static const int WINDOW_HEIGHT = 700;
 
+    /*
+     * window layout
+     */
     void set_layout();
-
     QVBoxLayout *outerLayout;
 
 
@@ -31,8 +38,13 @@ private slots:
     void on_click_edit();
 
 signals:
-    void send_start(int **);
+
+    /*
+     * when calling start by main window, game canvas is set to nullptr
+     * re-impl in edit window
+     */
+    void send_start(int **canvas);
     void send_load_continue();
-    void send_edit(int, int**);
+    void send_edit(int caller, int** canvas); // caller = 1 by default
 };
 #endif // QsnakeStartWindow_H

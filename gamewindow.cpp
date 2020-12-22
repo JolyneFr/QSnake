@@ -12,7 +12,6 @@ GameWindow::GameWindow(QWidget *parent) : QDialog(parent)
 
     height_pixel = CANVAS_HEIGHT / pixel;
     width_pixel = CANVAS_WIDTH / pixel;
-    savedGames = new std::vector<GameSence*>;
     isContinue = false;
 
     timer = new QTimer(this);
@@ -299,8 +298,6 @@ void GameWindow::receive_save()
 {
     GameSence *currentGame = new GameSence(thisGame);
 
-    savedGames->push_back(currentGame);
-
     thisGame->save_sence_to_file("./GameSence");
 
     QMessageBox::information(NULL, "OH YEAH!", "Game Saved Successfully");
@@ -325,18 +322,7 @@ void GameWindow::receive_continue_game()
 void GameWindow::receive_load_game()
 {
 
-    QFile file("./GameSence");
-
-    if (!file.exists() || file.size() < 10)
-    {
-        QMessageBox::information(NULL, "OH NO!", "No Game Saved.\n Please save a game before load.");
-        emit send_back_to_menu();
-        return;
-    }
-
-    thisGame = new GameSence("./GameSence");
-
-    canvas = thisGame->getCanvas();
+    load_game("./GameSence");
 
     update();
 
@@ -347,17 +333,20 @@ void GameWindow::receive_load_game()
     timer->start(times);
 }
 
-void GameWindow::load_game(int gameIndex)
+void GameWindow::load_game(QString filePath)
 {
-    thisGame = new GameSence((*savedGames)[gameIndex]);
+    QFile file(filePath);
+
+    if (!file.exists() || file.size() < 10)
+    {
+        QMessageBox::information(NULL, "OH NO!", "No Game Saved.\n Please save a game before load.");
+        emit send_back_to_menu();
+        return;
+    }
+
+    thisGame = new GameSence(filePath);
 
     canvas = thisGame->getCanvas();
-
-    update();
-
-    this->show();
-    isContinue = true;
-    timer->start(times);
 }
 
 int** GameWindow::get_canvas_clone(int **defaultCanvas)
@@ -382,8 +371,6 @@ int** GameWindow::get_canvas_clone(int **defaultCanvas)
 
 void GameWindow::restart()
 {
-
-    savedGames->clear();
 
     timeCounter = 0;
 

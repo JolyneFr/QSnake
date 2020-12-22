@@ -5,6 +5,11 @@
 #include <QMouseEvent>
 #include <QDebug>
 
+/*
+ * impl my own button class
+ * define styleSheet to edit
+ */
+
 class myButton : public QPushButton
 {
     Q_OBJECT

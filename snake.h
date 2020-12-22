@@ -13,6 +13,12 @@ class snake : public QObject
 {
     Q_OBJECT
 public:
+
+    /*
+     * constructor:
+     * init construct -- called when start a new game
+     * copy construct -- called when load game sence
+     */
     snake(int snakeNum, int startLen);
     snake(snake *other);
 
