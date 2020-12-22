@@ -28,6 +28,12 @@ SJTU SE2019 SEP Project1
 ## Game Guide
 I sincerely hope that **EVERYONE** reads this guide before playing my QSnake.  
 Especially my dear TA, who grades my final work.  
+
+### Basic Operation
+Use `arrow key` & `WASD` to control the snake.  
+Press `space` to pause.
+
+### Game Notice
 1. Bricks represented by different colors are shown in the gameWindow.  
     - <font color = #FFA500> Snake1 </font>,
   <font color = #000080> Snake2 </font>,
