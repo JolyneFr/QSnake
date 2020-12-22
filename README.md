@@ -43,7 +43,7 @@ Especially my dear TA, who grades my final work.
 5. The GameSence **WON'T** be saved implicitly, so please do it manually.
 6. Delamain's algorithm may be simple, but beating it is kind of difficult.
 7. The implement of QTimer::timeout() and QKeyEvent::keyPressEvent() is not connected, which means your death may occur **before** you see it on canvas.
-8. I'm working **desperately** on completion of comments. So just be patient.
+8. All comments have been completed.
 
 ## Thanks for Playing My First Qt Game
 JoyneFr 2020/12/16
