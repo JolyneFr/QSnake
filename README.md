@@ -4,13 +4,13 @@ SJTU SE2019 SEP Project1
 **This game was written only for HW, ANY other feature was NOT included.**  
 **Thanks for Understanding**
 ## Completed Tasks ##
-### 1.Basic Features  
+### 1. Basic Features  
 - Start Menu
 - Display & Move of Snake
 - Display & Determination of Bricks & Apples
 - Pause, Save & Load Game, Restart  
 
-### 2.Advanced Features
+### 2. Advanced Features
 - MultiPlayer in one game (Arrow Keys for Snake1 & WASD for Snake2)
 - 3 Special Fruit
     - LifeFruit.
