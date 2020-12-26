@@ -27,8 +27,8 @@ private:
      * store the size of canvas
      * for carrying the game canvas
      */
-    static const int width_pixel = 20;
-    static const int height_pixel = 20;
+    static const int width_pixel = 30;
+    static const int height_pixel = 30;
 
     /*
      * window layout

@@ -43,7 +43,7 @@ private:
     static const int WINDOW_HEIGHT = 750;
     static const int CANVAS_WIDTH = 600;
     static const int CANVAS_HEIGHT = 600;
-    static const int pixel = 30;
+    static const int pixel = 20;
     static const int times = 30;
 
     /*

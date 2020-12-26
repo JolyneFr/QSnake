@@ -37,8 +37,8 @@ private:
      * DO NOT change without thinking
      * equals to CANVAS_WIDTH / pixel & CANVAS_HEIGHT / pixel
      */
-    static const int CANVAS_WIDTH_PIXEL = 20;
-    static const int CANVAS_HEIGHT_PIXEL = 20;
+    static const int CANVAS_WIDTH_PIXEL = 30;
+    static const int CANVAS_HEIGHT_PIXEL = 30;
 
     void init_wall();
 

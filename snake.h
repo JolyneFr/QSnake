@@ -70,8 +70,8 @@ private:
      * for cross_the_bound checking
      * DO NOT CHANGE
      */
-    static const int CANVAS_WIDTH_PIXEL = 20;
-    static const int CANVAS_HEIGHT_PIXEL = 20;
+    static const int CANVAS_WIDTH_PIXEL = 30;
+    static const int CANVAS_HEIGHT_PIXEL = 30;
 
     QPoint *moveTable; // get move vector by index below
     int forwardDirect; // 1: right 2: down 3: left 4: up
