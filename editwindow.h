@@ -53,7 +53,7 @@ private:
     int **canvas;
 
     /*
-     * caller of this edit window
+     * caller of edit window
      * initialized when called
      * 1: main window
      * 2: pause window
